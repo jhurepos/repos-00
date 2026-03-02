@@ -76,7 +76,7 @@ if [ "$STATUS" != "200" ]; then
 fi
 
 git init --quiet
-git checkout -B main 2>/dev/null || git checkout main
+git checkout -B ukhona 2>/dev/null || git checkout ukhona
 
 # Remove node_modules/venv from git tracking if previously committed
 git rm -r --cached frontend/node_modules 2>/dev/null || true
@@ -89,7 +89,7 @@ git add .
 git commit --quiet -m "deploy: strata-twin v0.3 $(date '+%Y-%m-%d %H:%M')" 2>/dev/null || \
   git commit --allow-empty --quiet -m "deploy: strata-twin v0.3 $(date '+%Y-%m-%d %H:%M')"
 
-git push -f origin main
+git push -f origin ukhona
 ok "Pushed to https://github.com/$GH_USER/$GH_REPO"
 
 # ── 4. Trigger Render redeploy ────────────────────────────────────────────────
