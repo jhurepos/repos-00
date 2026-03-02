@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: strata-twin-backend
+    name: repos-00
     runtime: python
     rootDir: backend
     buildCommand: pip install -r requirements.txt
@@ -14,13 +14,3 @@ services:
       name: twin-db
       mountPath: /opt/render/project/src
       sizeGB: 1
-
-  - type: web
-    name: repos-00-frontend
-    runtime: static
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    envVars:
-      - key: VITE_API_URL
-        value: https://strata-twin-backend.onrender.com
