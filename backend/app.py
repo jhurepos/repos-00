@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("JWT_SECRET", "ukubona-dev-secret")
 
 CORS(app, resources={r"/api/*": {"origins": "*"}})
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
 init_db()
 simulator = PhaseSpaceSimulator(socketio)
