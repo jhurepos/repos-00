@@ -37,6 +37,8 @@ ok "Frontend copied to backend/static"
 # ── 2. Patch app.py (FIXED: This now serves the UI instead of JSON) ──────────
 info "Patching app.py to serve frontend..."
 cat > backend/app.py << 'PYEOF'
+import eventlet
+eventlet.monkey_patch()
 import os
 from flask import Flask, jsonify, request, send_from_directory
 from flask_socketio import SocketIO
@@ -100,6 +102,7 @@ flask-cors==4.0.0
 PyJWT==2.8.0
 gunicorn==21.2.0
 simple-websocket==1.1.0
+eventlet==0.35.2
 EOF
 
 cat > render.yaml << 'EOF'
