@@ -109,7 +109,7 @@ services:
     runtime: python
     rootDir: backend
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn --worker-class gthread --threads 4 -w 1 --chdir backend app:app --bind 0.0.0.0:$PORT
+    startCommand: gunicorn -k eventlet -w 1 app:app --bind 0.0.0.0:$PORT
     envVars:
       - key: JWT_SECRET
         generateValue: true
