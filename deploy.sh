@@ -231,7 +231,7 @@ if [ -n "$SRV_IDS" ]; then
       -d '{"clearCache": false}' > /dev/null
     ok "Triggered redeploy: $SRV_ID"
   done <<< "$SRV_IDS"
-fi
+fi    
 
 echo ""
 echo "┌──────────────────────────────────────────────────────────────┐"
