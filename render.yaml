@@ -3,9 +3,8 @@ services:
     name: strata-twin-backend
     runtime: python
     rootDir: backend
-    pythonVersion: "3.11"
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn --worker-class geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1 app:app --bind 0.0.0.0:$PORT
+    startCommand: gunicorn --worker-class gthread --threads 4 -w 1 --chdir backend app:app --bind 0.0.0.0:$PORT
     envVars:
       - key: JWT_SECRET
         generateValue: true
@@ -17,7 +16,7 @@ services:
       sizeGB: 1
 
   - type: web
-    name: strata-twin-frontend
+    name: repos-00-frontend
     runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
