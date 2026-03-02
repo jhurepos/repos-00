@@ -5,13 +5,8 @@ set -e
 # deploy.sh — Strata Stone Digital Twin
 # Ukubona LLC · v0.3
 #
-# What this does:
-#   1. Builds the React frontend for production
-#   2. Pushes everything to GitHub (muzaale/repos-00)
-#   3. Triggers Render to deploy via Blueprint
-#
-# Usage (run from inside strata-twin/):
-#   bash ../deploy.sh
+# Usage (run from inside strata-twin/ or repos-00/):
+#   bash deploy.sh
 # ─────────────────────────────────────────────────────────────────────────────
 
 CYAN="\033[0;36m"; GREEN="\033[0;32m"; RED="\033[0;31m"; RESET="\033[0m"
@@ -43,12 +38,26 @@ echo ""
 # ── 1. Build frontend ─────────────────────────────────────────────────────────
 info "Building frontend for production..."
 cd frontend
+rm -rf node_modules package-lock.json
 npm install --silent
 npm run build
 cd ..
 ok "Frontend built → frontend/dist/"
 
-# ── 2. Push to GitHub ─────────────────────────────────────────────────────────
+# ── 2. Ensure .gitignore is correct ──────────────────────────────────────────
+cat > .gitignore << 'EOF'
+node_modules/
+frontend/node_modules/
+backend/venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+dist/
+*.db
+EOF
+
+# ── 3. Push to GitHub ─────────────────────────────────────────────────────────
 info "Pushing to GitHub ($GH_USER/$GH_REPO)..."
 
 # Create repo if it doesn't exist
@@ -66,9 +75,12 @@ if [ "$STATUS" != "200" ]; then
   ok "Repo created"
 fi
 
-# Init git if needed, set remote, push
 git init --quiet
 git checkout -B main 2>/dev/null || git checkout main
+
+# Remove node_modules/venv from git tracking if previously committed
+git rm -r --cached frontend/node_modules 2>/dev/null || true
+git rm -r --cached backend/venv 2>/dev/null || true
 
 git remote remove origin 2>/dev/null || true
 git remote add origin "https://$GH_USER:$GH_TOKEN@github.com/$GH_USER/$GH_REPO.git"
@@ -80,43 +92,39 @@ git commit --quiet -m "deploy: strata-twin v0.3 $(date '+%Y-%m-%d %H:%M')" 2>/de
 git push -f origin main
 ok "Pushed to https://github.com/$GH_USER/$GH_REPO"
 
-# ── 3. Trigger Render Blueprint deploy ────────────────────────────────────────
-info "Triggering Render Blueprint deploy..."
+# ── 4. Trigger Render redeploy ────────────────────────────────────────────────
+info "Triggering Render deploy..."
 
-# List existing services to check if already deployed
-SERVICES=$(curl -s \
+SERVICES_JSON=$(curl -s \
   -H "Authorization: Bearer $RENDER_KEY" \
   -H "Accept: application/json" \
   "https://api.render.com/v1/services?limit=20")
 
-BACKEND_ID=$(echo "$SERVICES" | grep -o '"id":"[^"]*"' | head -1 | grep -o 'srv-[^"]*' || true)
+# Extract unique service IDs only
+SRV_IDS=$(echo "$SERVICES_JSON" | grep -o '"id":"srv-[^"]*"' | grep -o 'srv-[^"]*' | sort -u)
 
-if [ -n "$BACKEND_ID" ]; then
-  # Services exist — trigger redeploy
+if [ -n "$SRV_IDS" ]; then
   info "Services found — triggering redeploy..."
-  for SRV_ID in $(echo "$SERVICES" | grep -o 'srv-[^"]*'); do
+  while IFS= read -r SRV_ID; do
     curl -s -X POST \
       -H "Authorization: Bearer $RENDER_KEY" \
       -H "Accept: application/json" \
       "https://api.render.com/v1/services/$SRV_ID/deploys" \
       -d '{"clearCache": false}' > /dev/null
     ok "Triggered redeploy: $SRV_ID"
-  done
+  done <<< "$SRV_IDS"
 else
-  # First deploy — must be done via Blueprint in Render dashboard
   echo ""
   echo "┌──────────────────────────────────────────────────────────────┐"
   echo "│  FIRST DEPLOY — one manual step required                     │"
   echo "│                                                              │"
   echo "│  1. Go to: https://dashboard.render.com                     │"
   echo "│  2. Click New → Blueprint                                    │"
-  echo "│  3. Connect GitHub and select: $GH_USER/$GH_REPO            │"
+  echo "│  3. Connect GitHub → select: $GH_USER/$GH_REPO              │"
   echo "│  4. Render reads render.yaml automatically                   │"
-  echo "│  5. Click Apply                                              │"
+  echo "│  5. Click Apply and wait ~5 min                              │"
   echo "│                                                              │"
-  echo "│  After deploy, get your backend URL from Render dashboard    │"
-  echo "│  then run this script again — it will auto-redeploy          │"
-  echo "│  from that point forward.                                    │"
+  echo "│  After that, run deploy.sh again — fully automatic.         │"
   echo "└──────────────────────────────────────────────────────────────┘"
 fi
 
