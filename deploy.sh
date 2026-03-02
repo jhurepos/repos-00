@@ -25,7 +25,7 @@ info "Building frontend..."
 cd frontend
 rm -rf node_modules package-lock.json
 npm install --silent
-echo "VITE_API_URL=" > .env
+echo "VITE_API_URL=https://repos-00.onrender.com/api" > .env
 npm run build
 cd ..
 
