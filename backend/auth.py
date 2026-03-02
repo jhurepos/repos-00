@@ -22,9 +22,6 @@ def issue_token(username):
     }
     return jwt.encode(payload, SECRET, algorithm="HS256")
 
-def decode_token(token):
-    return jwt.decode(token, SECRET, algorithms=["HS256"])
-
 def requires_stake(min_usd=0):
     def decorator(f):
         @wraps(f)
@@ -33,12 +30,17 @@ def requires_stake(min_usd=0):
             if not auth.startswith("Bearer "):
                 return jsonify({"error": "No token"}), 401
             try:
-                payload = decode_token(auth.split(" ")[1])
-            except Exception:
+                token = auth.split(" ")[1]
+                payload = jwt.decode(token, SECRET, algorithms=["HS256"])
+                if payload.get("stake_usd", 0) < min_usd and payload.get("stake_type") == "none":
+                    return jsonify({"error": "Insufficient stake", "message": "You can only see what you have skin in."}), 403
+                request.user = payload
+                return f(*args, **kwargs)
+            except jwt.ExpiredSignatureError:
+                return jsonify({"error": "Token expired"}), 401
+            except jwt.InvalidTokenError:
                 return jsonify({"error": "Invalid token"}), 401
-            if payload.get("stake_usd", 0) < min_usd and payload.get("stake_type") == "none":
-                return jsonify({"error": "Insufficient stake", "message": "You can only see what you have skin in."}), 403
-            request.user = payload
-            return f(*args, **kwargs)
+            except Exception:
+                return jsonify({"error": "Token error"}), 401
         return wrapper
     return decorator
