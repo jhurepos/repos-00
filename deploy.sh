@@ -47,21 +47,20 @@ from models    import init_db, append_ledger, get_ledger, get_bias
 from simulator import PhaseSpaceSimulator
 from auth      import issue_token, requires_stake
 
-STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
-app = Flask(__name__, static_folder=STATIC_DIR, static_url_path="")
-app.config["SECRET_KEY"] = os.environ.get("JWT_SECRET", "ukubona-dev-secret")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_DIR = os.path.join(BASE_DIR, "static")
 
-CORS(app, resources={r"/api/*": {"origins": "*"}})
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
+app = Flask(
+    __name__,
+    static_folder=STATIC_DIR,
+    static_url_path=""
+)
 
-init_db()
-simulator = PhaseSpaceSimulator(socketio)
-
-# ── FIXED: Serve React frontend at root ──────────────────────────────────────
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
 def serve_frontend(path):
-    if path and os.path.exists(os.path.join(STATIC_DIR, path)):
+    file_path = os.path.join(STATIC_DIR, path)
+    if path and os.path.exists(file_path):
         return send_from_directory(STATIC_DIR, path)
     return send_from_directory(STATIC_DIR, "index.html")
 
