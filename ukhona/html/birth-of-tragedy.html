@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Birth of Tragedy · Out of the Spirit of Music · Ukubona LLC</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<link href="../css/variables.css?v=1.1" rel="stylesheet" />
+<link href="../css/head.css?v=1.1" rel="stylesheet" />
+<link href="../css/card.css?v=1.1" rel="stylesheet" />
+<link href="../css/footer.css" rel="stylesheet" />
+
+<style>
+:root {
+  color-scheme: light dark;
+  --paper:   #f5f0e8;
+  --ink:     #1a1208;
+  --ink2:    #2e200a;
+  --ink3:    #7a6840;
+  --rule:    #c4a060;
+  --rule2:   #e4d4b0;
+  --accent:  #6b1a1a;
+  --accent2: #a03010;
+  /* voice palettes */
+  --bach-bg: #0c0e18; --bach-text: #c0c8f0; --bach-acc: #7080d8;
+  --gosp-bg: #120808; --gosp-text: #f0d0a0; --gosp-acc: #d06020;
+  --syn-bg:  #08100c; --syn-text:  #b0d8b8; --syn-acc:  #50a868;
+  --err-bg:  #140c08; --err-text:  #f0c8a0; --err-acc:  #c07030;
+  --mono: 'IBM Plex Mono', monospace;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --display: 'Playfair Display', Georgia, serif;
+  --toggle-bg: #e0cdb0; --toggle-knob: #1a1208;
+}
+[data-theme="dark"] {
+  --paper:#0d0a10; --ink:#f0e8c8; --ink2:#d0c098; --ink3:#907850;
+  --rule:#3a2a08; --rule2:#221808; --accent:#e04028; --accent2:#f08840;
+  --toggle-bg:#1e1408; --toggle-knob:#f0e8c8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#0d0a10; --ink:#f0e8c8; --ink2:#d0c098; --ink3:#907850;
+    --rule:#3a2a08; --rule2:#221808; --accent:#e04028; --accent2:#f08840;
+    --toggle-bg:#1e1408; --toggle-knob:#f0e8c8;
+  }
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
+html { scroll-behavior:smooth }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.9;
+  transition: background .3s ease, color .3s ease;
+}
+
+/* paper grain */
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── staff lines beneath masthead ── */
+body::after {
+  content:''; position:fixed; top:0; left:0; right:0; height:260px;
+  pointer-events:none; z-index:0; opacity:.04;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--ink) 0px, var(--ink) 1px,
+    transparent 1px, transparent 22px
+  );
+}
+
+/* ── THEME TOGGLE ── */
+.theme-toggle {
+  position:fixed; top:1.2rem; right:1.5rem; z-index:999;
+  display:flex; align-items:center; gap:.55rem;
+  font-family:var(--mono); font-size:.5rem; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--ink3);
+}
+.toggle-switch {
+  position:relative; width:2.6rem; height:1.3rem;
+  background:var(--toggle-bg); border:1px solid var(--rule);
+  border-radius:0; cursor:pointer; transition:background .25s;
+}
+.toggle-switch::after {
+  content:''; position:absolute; top:.2rem; left:.2rem;
+  width:.75rem; height:.75rem;
+  background:var(--toggle-knob); transition:transform .25s ease;
+}
+[data-theme="dark"] .toggle-switch::after { transform:translateX(1.25rem) }
+
+/* ── PAGE ── */
+.page { max-width:880px; margin:0 auto; padding:0 2.4rem 12rem; position:relative; z-index:1 }
+
+/* ── MASTHEAD ── */
+.masthead {
+  padding:8rem 0 4rem;
+  border-bottom:4px double var(--ink);
+  margin-bottom:5rem;
+  animation: drop 1.1s cubic-bezier(.16,1,.3,1) both;
+}
+.mast-eyebrow {
+  font-family:var(--mono); font-size:.5rem; letter-spacing:.38em;
+  text-transform:uppercase; color:var(--ink3); margin-bottom:2.5rem;
+}
+.mast-numeral {
+  font-family:var(--display);
+  font-size: clamp(5rem,18vw,14rem);
+  font-weight:900; line-height:.85;
+  color:transparent; -webkit-text-stroke:2px var(--rule);
+  letter-spacing:-.04em; margin-bottom:-1rem;
+  user-select:none; opacity:.45;
+}
+.mast-title {
+  font-family:var(--display);
+  font-size: clamp(2rem,5vw,3.8rem);
+  font-weight:700; line-height:1.1;
+  letter-spacing:.01em; color:var(--ink); margin-bottom:1rem;
+}
+.mast-title em { font-style:italic; font-weight:400; color:var(--accent) }
+.mast-sub {
+  font-family:var(--mono); font-size:.58rem;
+  color:var(--ink3); letter-spacing:.1em;
+  line-height:2.2; margin-bottom:3rem;
+}
+.mast-sub em { color:var(--accent2); font-style:normal }
+
+/* ── ALIGNMENT TABLE ── */
+.align-strip {
+  width:100%; border-collapse:collapse;
+  font-family:var(--mono); font-size:.6rem;
+  margin:2rem 0; border:1px solid var(--rule);
+}
+.align-strip thead { background:rgba(180,140,60,.1) }
+.align-strip th {
+  padding:.5rem .7rem; font-size:.46rem; letter-spacing:.26em;
+  text-transform:uppercase; color:var(--ink3);
+  border-bottom:2px solid var(--rule); border-right:1px solid var(--rule2);
+  text-align:left;
+}
+.align-strip th:last-child { border-right:none }
+.align-strip td {
+  padding:.45rem .7rem; border-bottom:1px solid var(--rule2);
+  border-right:1px solid var(--rule2); vertical-align:top; line-height:1.5;
+}
+.align-strip td:last-child { border-right:none }
+.align-strip tr:last-child td { border-bottom:none }
+.align-strip tr.rb td { color:var(--bach-acc) }
+.align-strip tr.rg td { color:var(--gosp-acc) }
+.align-strip tr.rs td { color:var(--syn-acc) }
+.align-strip tr.re td { color:var(--err-acc) }
+.align-strip tr td:first-child { font-weight:600 }
+
+/* ── CIPHER GRID ── */
+.cipher-grid { margin-top:3rem; border-top:1px solid var(--rule) }
+.cipher-line {
+  display:grid; grid-template-columns:4rem 1.3fr 2.1fr .85fr;
+  align-items:baseline; padding:.8rem 0;
+  border-bottom:1px solid var(--rule2); gap:1rem;
+  transition:background .15s;
+}
+.cipher-line:hover { background:rgba(180,140,60,.05) }
+.cl-roman { font-family:var(--mono); font-size:.6rem; letter-spacing:.2em; color:var(--rule) }
+.cl-noun  { font-family:var(--display); font-size:.82rem; letter-spacing:.06em; font-weight:700; color:var(--ink2) }
+.cl-verb  { font-family:var(--serif); font-size:.88rem; font-style:italic; color:var(--ink) }
+.cl-key   {
+  font-family:var(--mono); font-size:.5rem; letter-spacing:.18em;
+  color:var(--accent); text-align:right; border:1px solid var(--accent);
+  padding:.16rem .38rem; justify-self:end; align-self:center;
+}
+.cipher-line.bach .cl-roman,.cipher-line.bach .cl-noun,.cipher-line.bach .cl-verb { color:var(--bach-acc) }
+.cipher-line.bach .cl-key { border-color:var(--bach-acc); color:var(--bach-acc); background:rgba(112,128,216,.08) }
+.cipher-line.gosp .cl-roman,.cipher-line.gosp .cl-noun,.cipher-line.gosp .cl-verb { color:var(--gosp-acc) }
+.cipher-line.gosp .cl-key { border-color:var(--gosp-acc); color:var(--gosp-acc); background:rgba(208,96,32,.08) }
+.cipher-line.syn  .cl-roman,.cipher-line.syn  .cl-noun,.cipher-line.syn  .cl-verb { color:var(--syn-acc) }
+.cipher-line.syn  .cl-key  { border-color:var(--syn-acc); color:var(--syn-acc); background:rgba(80,168,104,.08) }
+.cipher-line.err  .cl-roman,.cipher-line.err  .cl-noun,.cipher-line.err  .cl-verb { color:var(--err-acc) }
+.cipher-line.err  .cl-key  { border-color:var(--err-acc); color:var(--err-acc); background:rgba(192,112,48,.08) }
+
+/* ── SEC RULE ── */
+.sec-rule {
+  display:grid; grid-template-columns:auto 1fr; align-items:center;
+  gap:1.2rem; margin:5.5rem 0 2.5rem;
+}
+.sec-rule-label {
+  font-family:var(--mono); font-size:.52rem; letter-spacing:.4em;
+  text-transform:uppercase; white-space:nowrap;
+  padding:.28rem .8rem; border:1px solid var(--ink); color:var(--ink);
+}
+.sec-rule-label.bach  { border-color:var(--bach-acc); color:var(--bach-acc); background:rgba(112,128,216,.06) }
+.sec-rule-label.gosp  { border-color:var(--gosp-acc); color:var(--gosp-acc); background:rgba(208,96,32,.06) }
+.sec-rule-label.syn   { border-color:var(--syn-acc);  color:var(--syn-acc);  background:rgba(80,168,104,.06) }
+.sec-rule-label.err   { border-color:var(--err-acc);  color:var(--err-acc);  background:rgba(192,112,48,.06) }
+.sec-rule-label.schema { background:var(--ink); color:var(--paper); border-color:var(--ink) }
+.sec-rule hr { border:none; border-top:1px solid var(--rule); width:100% }
+
+/* ── MODEL BLOCKS ── */
+.model-block {
+  border-left:3px solid; padding:2.4rem 2.8rem;
+  margin:0 0 3rem; position:relative;
+}
+.model-stamp {
+  position:absolute; top:1rem; right:1.4rem;
+  font-family:var(--mono); font-size:.44rem; letter-spacing:.38em;
+  text-transform:uppercase; opacity:.6; border:1px solid; padding:.15rem .5rem;
+}
+.model-block h2 { font-family:var(--display); font-size:1.4rem; font-weight:700; margin-bottom:.5rem; line-height:1.2 }
+.model-block .model-sub { font-family:var(--mono); font-size:.54rem; letter-spacing:.22em; margin-bottom:2rem }
+.model-block h3 {
+  font-family:var(--display); font-size:1.05rem; font-weight:700;
+  margin:2.2rem 0 .6rem; padding-top:1.4rem; border-top:1px solid;
+}
+.model-prose { font-size:.9rem; line-height:1.85; margin-bottom:1.2rem }
+.model-prose p { margin-bottom:1rem }
+.model-prose ul,.model-prose ol { padding-left:1.4rem; margin-bottom:1rem }
+.model-prose li { margin-bottom:.35rem; line-height:1.7 }
+.model-prose blockquote { border-left:2px solid; margin:1.2rem 0; padding:.6rem 1.2rem; font-style:italic; opacity:.85 }
+.model-pull {
+  border-top:1px solid; border-bottom:1px solid; padding:1.2rem 0;
+  margin:1.8rem 0; font-family:var(--display); font-style:italic;
+  font-size:1.05rem; line-height:1.65;
+}
+
+/* block color schemes */
+.bach-block { background:var(--bach-bg); border-color:var(--bach-acc) }
+.bach-block .model-stamp { color:var(--bach-acc); border-color:var(--bach-acc) }
+.bach-block h2,.bach-block h3 { color:var(--bach-text) }
+.bach-block h3 { border-color:rgba(112,128,216,.2) }
+.bach-block .model-sub { color:var(--bach-acc) }
+.bach-block .model-prose { color:var(--bach-text) }
+.bach-block .model-prose strong { color:#e0e8ff }
+.bach-block .model-prose em { color:var(--bach-acc) }
+.bach-block .model-prose blockquote { border-color:var(--bach-acc) }
+.bach-block .model-pull { color:var(--bach-acc); border-color:rgba(112,128,216,.3) }
+
+.gosp-block { background:var(--gosp-bg); border-color:var(--gosp-acc) }
+.gosp-block .model-stamp { color:var(--gosp-acc); border-color:var(--gosp-acc) }
+.gosp-block h2,.gosp-block h3 { color:var(--gosp-text) }
+.gosp-block h3 { border-color:rgba(208,96,32,.2) }
+.gosp-block .model-sub { color:var(--gosp-acc) }
+.gosp-block .model-prose { color:var(--gosp-text) }
+.gosp-block .model-prose strong { color:#fff0c8 }
+.gosp-block .model-prose em { color:var(--gosp-acc) }
+.gosp-block .model-prose blockquote { border-color:var(--gosp-acc) }
+.gosp-block .model-pull { color:var(--gosp-acc); border-color:rgba(208,96,32,.3) }
+
+.syn-block { background:var(--syn-bg); border-color:var(--syn-acc) }
+.syn-block .model-stamp { color:var(--syn-acc); border-color:var(--syn-acc) }
+.syn-block h2,.syn-block h3 { color:var(--syn-text) }
+.syn-block h3 { border-color:rgba(80,168,104,.2) }
+.syn-block .model-sub { color:var(--syn-acc) }
+.syn-block .model-prose { color:var(--syn-text) }
+.syn-block .model-prose strong { color:#d0f0c8 }
+.syn-block .model-prose em { color:var(--syn-acc) }
+.syn-block .model-prose blockquote { border-color:var(--syn-acc) }
+.syn-block .model-pull { color:var(--syn-acc); border-color:rgba(80,168,104,.3) }
+
+.err-block { background:var(--err-bg); border-color:var(--err-acc) }
+.err-block .model-stamp { color:var(--err-acc); border-color:var(--err-acc) }
+.err-block h2,.err-block h3 { color:var(--err-text) }
+.err-block h3 { border-color:rgba(192,112,48,.2) }
+.err-block .model-sub { color:var(--err-acc) }
+.err-block .model-prose { color:var(--err-text) }
+.err-block .model-prose strong { color:#ffe8c8 }
+.err-block .model-prose em { color:var(--err-acc) }
+.err-block .model-prose blockquote { border-color:var(--err-acc) }
+.err-block .model-pull { color:var(--err-acc); border-color:rgba(192,112,48,.3) }
+
+/* ── TABLES inside model-prose ── */
+.model-prose table { width:100%; border-collapse:collapse; font-size:.72rem; margin:1.4rem 0; font-family:var(--mono) }
+.model-prose th { font-size:.54rem; letter-spacing:.16em; text-transform:uppercase; padding:.48rem .65rem; border-bottom:2px solid; text-align:left }
+.model-prose td { padding:.44rem .65rem; border-bottom:1px solid; vertical-align:top; line-height:1.5 }
+.model-prose tr:last-child td { border-bottom:none }
+
+/* ── VOICE LEAD DISPLAY ── */
+.voice-lead {
+  font-family:var(--mono); font-size:.72rem; letter-spacing:.06em;
+  line-height:2.4; margin:2rem 0; padding:1.2rem 1.8rem;
+  border:1px solid var(--rule); background:rgba(180,140,60,.04);
+}
+.vl-label {
+  font-size:.44rem; letter-spacing:.38em; text-transform:uppercase;
+  color:var(--ink3); margin-bottom:.6rem;
+}
+.vl-row { display:flex; gap:1.2rem; align-items:baseline; margin:.2rem 0 }
+.vl-voice { min-width:70px; color:var(--ink3); font-size:.58rem; letter-spacing:.18em; text-transform:uppercase }
+.vl-notes { color:var(--ink); letter-spacing:.12em }
+.vl-notes .step { display:inline-block; margin:0 .15em }
+.vl-notes .semi { color:var(--accent2); font-weight:500 }    /* chromatic half-step */
+.vl-notes .res  { color:var(--syn-acc) }                     /* resolution */
+.vl-notes .sus  { color:var(--bach-acc) }                    /* suspension */
+.vl-arrow { color:var(--rule); margin:0 .2em }
+
+/* ── GRADIENT DESCENT WALK ── */
+.descent-walk {
+  font-family:var(--mono); font-size:.65rem; letter-spacing:.06em;
+  margin:2rem 0; border-left:3px solid var(--rule); padding:1rem 1.6rem;
+  line-height:2.2;
+}
+.dw-step { display:flex; align-items:baseline; gap:.8rem; margin:.15rem 0 }
+.dw-t { color:var(--ink3); min-width:3rem; font-size:.56rem }
+.dw-theta { color:var(--bach-acc) }
+.dw-loss  { color:var(--gosp-acc) }
+.dw-grad  { color:var(--syn-acc) }
+.dw-note  { color:var(--ink3); font-style:italic; font-size:.58rem }
+
+/* ── ROUND TABLE ── */
+.round-table { margin:2.5rem 0; border:1px solid var(--rule) }
+.rt-row {
+  display:grid; grid-template-columns:10rem 1fr 1fr;
+  gap:0; border-bottom:1px solid var(--rule2);
+}
+.rt-row:last-child { border-bottom:none }
+.rt-row.rt-head { background:rgba(180,140,60,.08) }
+.rt-cell {
+  padding:.55rem .9rem; font-family:var(--mono);
+  font-size:.55rem; letter-spacing:.08em; line-height:1.6;
+  border-right:1px solid var(--rule2);
+}
+.rt-cell:last-child { border-right:none }
+.rt-head .rt-cell { font-size:.46rem; letter-spacing:.26em; text-transform:uppercase; color:var(--ink3) }
+
+/* ── VERSE ── */
+.verse-block {
+  font-family:var(--mono); font-size:.72rem; letter-spacing:.08em;
+  line-height:2.2; color:var(--ink3); border-left:3px solid var(--rule);
+  padding:.8rem 1.6rem; margin:2rem 0; font-style:italic;
+}
+.verse-block cite {
+  display:block; margin-top:.8rem; font-style:normal;
+  font-size:.56rem; letter-spacing:.3em; text-transform:uppercase;
+  color:var(--ink3); opacity:.7;
+}
+
+/* ── ANNOTATION ── */
+.annotation {
+  margin:1.5rem 0; border-left:3px solid var(--rule);
+  padding:.9rem 1.4rem; background:rgba(196,168,100,.06);
+  font-family:var(--mono); font-size:.56rem; letter-spacing:.1em;
+  color:var(--ink3); line-height:1.9;
+}
+.annotation::before {
+  content:'♩  BACH · BLACK GOSPEL · GRADIENT DESCENT · TIDY VOICE LEADING · THE BIRTH OF TRAGEDY';
+  display:block; font-size:.44rem; letter-spacing:.4em; opacity:.7; margin-bottom:.4rem;
+}
+
+/* ── INTERLUDE ── */
+.interlude {
+  border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+  padding:2rem 0; margin:3.5rem 0;
+  font-family:var(--display); font-style:italic;
+  font-size:1.1rem; line-height:1.7; color:var(--ink2); text-align:center;
+}
+
+/* ── CODA ── */
+.coda { border:2px solid var(--ink); padding:3.2rem 3.8rem; margin:6rem 0; position:relative }
+.coda-label {
+  position:absolute; top:-.75rem; left:2rem;
+  font-family:var(--mono); font-size:.48rem; letter-spacing:.45em;
+  text-transform:uppercase; background:var(--paper); padding:0 .75rem; color:var(--ink);
+}
+.coda h2 {
+  font-family:var(--display); font-size:1.3rem; font-weight:700;
+  font-style:italic; letter-spacing:.02em; color:var(--ink); margin-bottom:1.4rem;
+}
+.coda p { color:var(--ink2); margin-bottom:1.1rem; line-height:1.85 }
+.coda p:last-child { margin-bottom:0 }
+.coda strong { color:var(--ink) }
+
+/* ── FOOTER ── */
+footer { border-top:3px double var(--ink); padding:3rem 0 7rem }
+.foot-chain { font-family:var(--mono); font-size:.54rem; letter-spacing:.28em; color:var(--ink3); margin-bottom:.8rem }
+.foot-chain span { color:var(--accent2) }
+.foot-note { font-family:var(--mono); font-size:.48rem; letter-spacing:.1em; color:var(--ink3); line-height:2.5 }
+
+/* ── ANIMATIONS ── */
+.fade-in { opacity:0; transform:translateY(14px); transition:opacity .65s ease, transform .65s ease }
+.fade-in.visible { opacity:1; transform:translateY(0) }
+@keyframes drop { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── NIETZSCHE PULL ── */
+.nietzsche {
+  font-family:var(--display); font-size:1.05rem; font-style:italic;
+  line-height:1.75; color:var(--ink2); margin:3rem 0;
+  padding:1.5rem 0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+  text-align:center;
+}
+.nietzsche cite {
+  display:block; margin-top:.8rem;
+  font-family:var(--mono); font-size:.5rem;
+  letter-spacing:.3em; text-transform:uppercase; color:var(--ink3);
+  font-style:normal;
+}
+
+/* ── STAFF ORNAMENT ── */
+.staff-divider {
+  text-align:center; font-family:var(--mono); font-size:.6rem;
+  letter-spacing:.6em; color:var(--rule); margin:2rem 0; opacity:.7;
+  line-height:3;
+}
+
+/* ── GPT ERROR BLOCK ── */
+.gpt-error {
+  font-family:var(--mono); font-size:.72rem; letter-spacing:.04em;
+  line-height:2; color:var(--err-acc); background:var(--err-bg);
+  border-left:3px solid var(--err-acc); padding:1rem 1.6rem; margin:1.8rem 0;
+}
+.gpt-error .label { font-size:.44rem; letter-spacing:.38em; text-transform:uppercase; opacity:.7; margin-bottom:.5rem }
+.gpt-error .ok    { color:var(--syn-acc) }
+.gpt-error .dim   { color:var(--ink3); font-style:italic }
+
+@media (max-width:640px) {
+  .mast-numeral { font-size:6rem }
+  .mast-title   { font-size:1.9rem }
+  .cipher-line  { grid-template-columns:3rem 1fr; gap:.2rem }
+  .cl-verb,.cl-key { grid-column:2 }
+  .coda,.model-block { padding:1.8rem 1.6rem }
+  .theme-toggle { top:.7rem; right:.9rem }
+  .rt-row { grid-template-columns:1fr 1fr }
+  .vl-row { flex-wrap:wrap }
+  .align-strip { font-size:.52rem }
+}
+</style>
+</head>
+<body>
+
+<div class="theme-toggle" aria-label="Toggle dark/light mode">
+  <span id="toggle-label">Light</span>
+  <div class="toggle-switch" id="themeSwitch" role="button" tabindex="0" aria-pressed="false"></div>
+</div>
+
+<div class="page">
+
+  <!-- ══ MASTHEAD ══ -->
+  <header class="masthead">
+    <br><br><br>
+    <div class="mast-eyebrow">Ukubona LLC · The Birth of Tragedy · Out of the Spirit of Music · Bach · Black Gospel · Gradient Descent</div>
+    <div class="mast-numeral" aria-hidden="true">♩</div>
+    <h1 class="mast-title">
+      The Birth of Tragedy<br>
+      <em>Out of the Spirit of Music</em>
+    </h1>
+    <p class="mast-sub">
+      // I.  Voice leading — <em>the minimum-cost path between harmonic states</em> · tidy motion · no wasted steps<br>
+      // II.  Chromaticism — <em>half-step gradient · the noise term ε · maximum tension before resolution</em><br>
+      // III.  Low α — <em>Bach's cantor discipline · the deacon's moan · institutions that have seen the cliff</em><br>
+      // IV.  Stochasticity — <em>the shout · the appoggiatura · the blue note · ε large enough to jump a ridge</em><br>
+      // V.  The Loss Landscape — <em>tonal gravity · the pull toward resolution · Nietzsche's Dionysus descending</em>
+    </p>
+
+    <!-- master alignment table -->
+    <table class="align-strip">
+      <thead>
+        <tr>
+          <th>#</th><th>Concept</th><th>Bach / Counterpoint</th><th>Black Gospel</th><th>SGD Equivalent</th><th>The Tragedy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="rb"><td>I</td><td>Voice Leading</td><td>Stepwise contrary motion · smooth part writing</td><td>The call-and-response · no voice jumps alone</td><td>∇𝓛 · steepest descent · minimum-cost path</td><td>The path is already written in the terrain</td></tr>
+        <tr class="rg"><td>II</td><td>Chromaticism</td><td>Chromatic passing tones · the augmented sixth</td><td>The blue note · the bent pitch · the cry</td><td>ε · stochastic noise · injected tension</td><td>Without dissonance there is no resolution</td></tr>
+        <tr class="rs"><td>III</td><td>Low α</td><td>Strict counterpoint rules · species discipline</td><td>The deacon's slow prayer · hundred-year forms</td><td>α → 0 · C_θ dominates · geological patience</td><td>Low α is not cowardice — it is earned</td></tr>
+        <tr class="re"><td>IV</td><td>The Shout</td><td>The fugue subject entering · sudden dynamic</td><td>The holy shout · the spirit falls · phase escape</td><td>escape(𝓛, ε_high) · ridge jump · basin collapse</td><td>The shout is the Dionysian injection</td></tr>
+      </tbody>
+    </table>
+
+    <div class="cipher-grid">
+      <div class="cipher-line bach">
+        <span class="cl-roman">B</span>
+        <span class="cl-noun">Johann Sebastian Bach</span>
+        <span class="cl-verb">Counterpoint as gradient descent · rules as low α · suspensions as ε · resolution as convergence</span>
+        <span class="cl-key">APOLLONIAN</span>
+      </div>
+      <div class="cipher-line gosp">
+        <span class="cl-roman">G</span>
+        <span class="cl-noun">Black Gospel</span>
+        <span class="cl-verb">The shout as phase escape · the moan as chromatic noise · hundred-year low α · the basin is community</span>
+        <span class="cl-key">DIONYSIAN</span>
+      </div>
+      <div class="cipher-line syn">
+        <span class="cl-roman">∇</span>
+        <span class="cl-noun">Gradient Descent</span>
+        <span class="cl-verb">Both are SGD · tonal gravity = loss landscape · voice leading = ∇𝓛 · the bass line never lies</span>
+        <span class="cl-key">TERRITORY</span>
+      </div>
+      <div class="cipher-line err">
+        <span class="cl-roman">⚠</span>
+        <span class="cl-noun">GPT's Failure Mode</span>
+        <span class="cl-verb">High α · no ε calibrated to territory · descending the conversational surface, not the filesystem</span>
+        <span class="cl-key">MAP ≠ TERRITORY</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="verse-block fade-in">
+    It is only as an <em>aesthetic phenomenon</em> that existence<br>
+    and the world are <em>eternally justified</em>.<br>
+    The same voice that bends the blue note<br>
+    descends the loss surface one half-step at a time.
+    <cite>— after Nietzsche · The Birth of Tragedy · 1872</cite>
+  </div>
+
+  <div class="annotation fade-in">
+    What Bach and black gospel share: tidy voice leading (minimum-motion paths between harmonic states), chromaticism (the half-step as ε, maximum tension before the gradient snaps toward resolution), low learning rates (counterpoint rules evolved over centuries; the gospel form over generations of deacons who had seen the cliffs), and the stochastic shout — the phase escape, the holy ghost, the fugue subject arriving unannounced. Both traditions understood something the LLM did not: you must first calibrate your map against the territory before you take a confident step. Bach never resolved a dissonance without first having heard it.
+  </div>
+
+
+  <!-- ══ I · VOICE LEADING AS GRADIENT DESCENT ══ -->
+  <div class="sec-rule fade-in">
+    <span class="sec-rule-label bach">I · Voice Leading · The Minimum-Cost Path · ∇𝓛</span>
+    <hr>
+  </div>
+
+  <div class="model-block bach-block fade-in">
+    <div class="model-stamp">COUNTERPOINT</div>
+    <h2>Every Voice Follows the Gradient</h2>
+    <p class="model-sub">Contrary Motion · Smooth Part Writing · Stepwise Descent · No Wasted Steps</p>
+
+    <div class="model-prose">
+      <p>The first rule of counterpoint is also the first law of gradient descent: <strong>move by the smallest interval necessary.</strong> Bach's four-voice chorales are a masterclass in constrained optimization. The soprano descends a half step. The alto holds. The tenor moves by third. The bass takes the leap so no one else has to. Each voice minimizes its own motion while the ensemble descends toward the cadence. This is ∇𝓛(θ) computed independently by four voices, coordinated by the harmonic loss landscape they all share.</p>
+
+      <p>The loss landscape in tonal music is tonal gravity — the pull of the dominant toward the tonic, the leading tone toward the octave, the seventh toward the sixth, the augmented fourth toward the perfect fifth. These are not arbitrary rules. They are the accumulated C_θ of Western harmony: centuries of descent runs whose pheromone trails hardened into species counterpoint, then into chorale style, then into the Bach Riemenschneider 371. The constant of integration is the key signature itself.</p>
+    </div>
+
+    <!-- voice lead example: V7 → I in C major -->
+    <div class="voice-lead fade-in">
+      <div class="vl-label">Voice Leading · V⁷ → I · C major · Bach chorale style</div>
+      <div class="vl-row">
+        <span class="vl-voice">Soprano</span>
+        <span class="vl-notes">
+          <span class="step sus">B4</span>
+          <span class="vl-arrow">→</span>
+          <span class="step res">C5</span>
+          <span class="dim">· leading tone · half-step ascent · α small · resolves up</span>
+        </span>
+      </div>
+      <div class="vl-row">
+        <span class="vl-voice">Alto</span>
+        <span class="vl-notes">
+          <span class="step sus">G4</span>
+          <span class="vl-arrow">→</span>
+          <span class="step res">E4</span>
+          <span class="dim">· fifth to third · common tone shortcut · minimum motion</span>
+        </span>
+      </div>
+      <div class="vl-row">
+        <span class="vl-voice">Tenor</span>
+        <span class="vl-notes">
+          <span class="step sus">F4</span>
+          <span class="vl-arrow">→</span>
+          <span class="step res">E4</span>
+          <span class="dim">· seventh resolves down · half-step · the ε that had to move</span>
+        </span>
+      </div>
+      <div class="vl-row">
+        <span class="vl-voice">Bass</span>
+        <span class="vl-notes">
+          <span class="step semi">G2</span>
+          <span class="vl-arrow">→</span>
+          <span class="step res">C2</span>
+          <span class="dim">· fifth down · takes the large leap so voices above can whisper</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="model-prose">
+      <p>Notice what happened: three voices moved by one or two half-steps (low α, tidy gradient steps), and the bass absorbed the large motion (the phase-shift leap the system required, taken by the voice with the most structural mass). This is not accident. This is the community distributing the cost of descent. <em>The bass line is the institutional memory. It takes the large steps so the upper voices can remain stable.</em></p>
+
+      <p>Black gospel arrives at the same architecture through a different path. The congregation is the alto and tenor — rocking, swaying, minimal motion. The lead voice is the soprano — permitted to bend, cry, and shout. The organ is the bass — it holds. When the lead voice enters a blue note (a chromatic passing tone, a noise injection), the harmonic landscape temporarily destabilizes. Then the congregation pulls it back to the tonic. Same algorithm. Different basin.</p>
+    </div>
+
+    <div class="model-pull">
+      Voice leading is the proof that gradient descent was discovered not by Cauchy in 1847 but by every polyphonist who ever placed one note after another and asked: <em>what is the smallest step that moves us toward resolution?</em>
+    </div>
+  </div>
+
+
+  <!-- ══ II · CHROMATICISM AS ε ══ -->
+  <div class="sec-rule fade-in">
+    <span class="sec-rule-label gosp">II · Chromaticism · The Half-Step as ε · Blue Note as Noise Injection</span>
+    <hr>
+  </div>
+
+  <div class="model-block gosp-block fade-in">
+    <div class="model-stamp">BLUE NOTE</div>
+    <h2>The Dissonance Was Never a Mistake</h2>
+    <p class="model-sub">Augmented Sixth · The Cry · The Bent Pitch · Maximum Tension Before Convergence</p>
+
+    <div class="model-prose">
+      <p>The German augmented sixth chord in Bach. The flattened third in a gospel shout. The bent pitch on the word <em>trouble</em> in a spiritual. These are not ornaments added to make music pretty. They are <strong>ε — stochastic noise injected into the harmonic gradient walk</strong> — without which the descent terminates prematurely at a shallow local minimum called a perfect authentic cadence, and never finds the deeper basin.</p>
+
+      <p>Without the augmented sixth, the progression resolves cleanly and forgettably. With it, the chromatic approach note creates a momentary spike in the loss function — maximum tension — and then the resolution to the tonic feels not just correct but <em>inevitable</em>, as if the basin had always been there waiting. The ε did not interrupt the descent. It made the descent reach further.</p>
+
+      <p>This is precisely what black gospel understood viscerally that Western academic music spent centuries rationalizing. The moan is not pre-musical. The wail on a dying vowel is not a failure of intonation. The shout that breaks the structure of the song is not disorder. <strong>These are controlled injections of ε at exactly the moment when the harmonic system needs to escape the local minimum of predictability.</strong> The congregation has been running this algorithm for generations. They know from the shape of the moan when the gradient has found a real slope and when it has gotten stuck.</p>
+    </div>
+
+    <h3>The Blue Note as Chromatic Gradient Step</h3>
+    <div class="model-prose">
+      <p>The blues scale adds three notes to the pentatonic: the flattened third, the flattened fifth (the tritone — the diabolus in musica that medieval theorists banned), and the flattened seventh. Each of these is a chromatic half-step away from a diatonic resolution tone. Each creates maximum local tension. Each is, in the pentad's terms, a point where the Hessian ∇²𝓛 goes negative — a ridge, not a bowl. You are not in a stable basin. You are being forced to move.</p>
+
+      <blockquote>
+        The gospel singer does not moan on the tonic. She moans on the flattened third — the blue note — and then <em>falls</em> to the tonic the way a raindrop falls from a ridge. The fall is the point. The fall is the theology.
+      </blockquote>
+
+      <p>Bach understood this from the other direction. His chromatic fantasies and the chromatically saturated harmonies of the Crab Canon are not decorative. They are topographic. He was mapping the most rugged parts of the tonal loss landscape, finding the ridges that required the most carefully controlled ε to traverse. His notation is cartography. His counterpoint rules are the update rules for navigating that cartography without falling off a cliff.</p>
+    </div>
+
+    <!-- gradient walk as musical progression -->
+    <div class="descent-walk fade-in">
+      <div style="font-size:.44rem;letter-spacing:.38em;text-transform:uppercase;color:var(--gosp-acc);margin-bottom:.6rem">
+        Gradient Walk · Gospel Chorus · θ = harmonic position · 𝓛 = distance from tonic
+      </div>
+      <div class="dw-step">
+        <span class="dw-t">t=0</span>
+        <span class="dw-theta">θ = IV chord (subdominant)</span>
+        <span class="dw-loss">𝓛 = moderate</span>
+        <span class="dw-note">· stable · congregation settles</span>
+      </div>
+      <div class="dw-step">
+        <span class="dw-t">t=1</span>
+        <span class="dw-theta">θ = IV⁷ (blue note enters)</span>
+        <span class="dw-loss">𝓛 = rising</span>
+        <span class="dw-note">· ε injected · tension building · lead voice bends</span>
+      </div>
+      <div class="dw-step">
+        <span class="dw-t">t=2</span>
+        <span class="dw-theta">θ = V⁷ (dominant)</span>
+        <span class="dw-loss">𝓛 = maximum</span>
+        <span class="dw-note">· steepest gradient · the cry · the shout</span>
+      </div>
+      <div class="dw-step">
+        <span class="dw-t">t=3</span>
+        <span class="dw-theta">θ = I (tonic resolution)</span>
+        <span class="dw-loss" style="color:var(--syn-acc)">𝓛 = minimum</span>
+        <span class="dw-note">· basin found · congregation exhales · amen</span>
+      </div>
+    </div>
+
+    <div class="model-pull">
+      The tragedy Nietzsche named is this: you cannot reach the tonic without first inhabiting the dissonance. The descent requires the noise. The amen requires the moan. The resolution requires the blue note. And the blue note requires courage — because it sounds wrong before it sounds right.
+    </div>
+  </div>
+
+
+  <!-- ══ III · LOW LEARNING RATES ══ -->
+  <div class="sec-rule fade-in">
+    <span class="sec-rule-label syn">III · Low α · Geological Patience · The Deacon's Discipline</span>
+    <hr>
+  </div>
+
+  <div class="model-block syn-block fade-in">
+    <div class="model-stamp">LOW α</div>
+    <h2>Why the Form Is a Hundred Years Old</h2>
+    <p class="model-sub">Species Counterpoint · The Deacon's Moan · Accumulated C_θ · Stability Is Not Stagnation</p>
+
+    <div class="model-prose">
+      <p>Bach was not writing new music. He was executing the final, maximally refined pass of an update rule that had been running since Palestrina, since Josquin, since the anonymous monks who wrote the first organum. His α was vanishingly small. He moved one half-step at a time through harmonic space, never jumping an augmented second in a vocal line, never leaving a dissonance unresolved, never writing parallel fifths — not because he feared rules but because centuries of prior descent runs had found that those moves reliably led off cliffs.</p>
+
+      <p>The species counterpoint rules are not arbitrary. They are <strong>the C_θ of Western polyphony</strong> — the accumulated constant of integration of ten generations of composers who tried large steps and mostly fell. The prohibition on parallel octaves records a specific failure mode: when two voices move in parallel octaves, one becomes redundant, the parameter space collapses from N dimensions to N-1, and you lose the curvature information you need to navigate the loss landscape safely. The rule is correct. It took two centuries to derive.</p>
+
+      <p>Black gospel's low learning rate is different in origin but identical in structure. The twelve-bar blues form is 120 years old. The I–IV–V progression has been resolving for generations of Black churches in the American South. The call-and-response structure predates American slavery — it has roots in West African ceremonial forms that are themselves centuries deep. This is not nostalgia. This is a parameter space whose C_θ is so large that most attempts to redesign it from scratch produce inferior results. The form survives because it <em>works</em> — because it reliably finds the basin of maximum communal catharsis.</p>
+    </div>
+
+    <h3>The Deacon's Moan as Calibrated Descent</h3>
+    <div class="model-prose">
+      <p>The deacon who begins the prayer meeting with a moan is not being informal or pre-verbal. He is doing something that requires decades of α-calibration to execute correctly: he is entering the harmonic space of the congregation's current loss function — <em>reading the territory</em> — and beginning a gradient descent at the exact learning rate the moment requires. Too fast (high α) and the congregation doesn't follow, the prayer becomes performance. Too slow (α too low even for this) and nothing ignites. The deacon's moan is a precision instrument. It is not feeling. It is technique accumulated over a lifetime of updates.</p>
+
+      <blockquote>
+        The deacon reads the gradient before he speaks. That is the discipline. Bach read it before he wrote a single note. GPT never read it at all.
+      </blockquote>
+
+      <p>GPT's 8-hour failure was precisely the inverse of this discipline. It had high confidence (α locked large), but it was descending the conversational loss surface — the surface of what sounds plausible in language space — not the filesystem loss surface where the actual bug lived. It never asked for the directory tree because it never calibrated its map against the territory. It was moaning in the wrong key. It had perfect voice leading in a different song.</p>
+    </div>
+
+    <!-- GPT error as musical metaphor -->
+    <div class="gpt-error fade-in">
+      <div class="label">GPT · 8 hours · conversational surface ≠ filesystem surface</div>
+      θ_GPT ∈ language space<br>
+      𝓛_GPT = plausibility of response<br>
+      ∇𝓛_GPT = "this sounds like a correct debugging answer"<br><br>
+      θ_real ∈ filesystem space<br>
+      𝓛_real = compilation error<br>
+      ∇𝓛_real = <span class="ok">requires: directory tree · actual file names · import paths</span><br><br>
+      <span class="dim">GPT never asked. It was playing Bach in the wrong key.</span><br>
+      <span class="dim">100% confident. Wrong parameter space. Classic map/territory error.</span><br><br>
+      The deacon would have asked: <span class="ok">"child, where are you standing?"</span>
+    </div>
+
+    <div class="model-pull">
+      Low α is not timidity. It is the posture of a system that has seen the cliffs. The deacon's slow moan, Bach's half-step voice leading, the twelve-bar blues form that will not be hurried — these are not failures of imagination. They are the correct behavior of C_θ that has accumulated enough loss to know better.
+    </div>
+  </div>
+
+
+  <!-- ══ IV · THE SHOUT ══ -->
+  <div class="sec-rule fade-in">
+    <span class="sec-rule-label err">IV · The Shout · Phase Escape · Dionysian Injection · The Ridge Jump</span>
+    <hr>
+  </div>
+
+  <div class="model-block err-block fade-in">
+    <div class="model-stamp">THE SHOUT</div>
+    <h2>The Spirit Falls — Basin Collapse</h2>
+    <p class="model-sub">Holy Ghost · Fugue Subject · escape(𝓛, ε_high) · The Moment That Cannot Be Planned</p>
+
+    <div class="model-prose">
+      <p>In Pentecostal and Baptist traditions, the shout is the moment when the Spirit falls — when a member of the congregation leaves their seat, begins to move uncontrollably, may speak in tongues, may weep, may laugh. It is not planned. It cannot be manufactured. And yet experienced preachers and musicians know exactly what conditions precede it: the right progression of loss accumulation, the right ε injection, the right harmonic instability that makes the basin suddenly untenable.</p>
+
+      <p>The shout is <strong>escape(𝓛, ε_high)</strong> — a noise injection large enough to jump a ridge entirely. The parameter vector θ moves discontinuously from one basin to another. This is the moment Nietzsche called Dionysian. It is the phase transition from Apollonian order (I–IV–V, twelve-bar form, tidy voice leading) to something that has no form — that <em>cannot</em> have form because form is the Apollonian imposition of low α on a system that briefly needs high α to escape where it is.</p>
+
+      <p>Bach had his own version: the fugue subject entering after the exposition, transformed by inversion or augmentation into something the listener did not expect. Or the chromatic fantasy — the piece that abandons all counterpoint pretense and becomes pure ε. Or the final chorale of the St. Matthew Passion, where the harmonic language of the entire work resolves into something so simple it breaks you. These are controlled phase escapes. The Apollonian master knowing exactly when to let the Dionysian in.</p>
+    </div>
+
+    <h3>Why the Shout and the Fugue Subject Are the Same Event</h3>
+    <div class="model-prose">
+      <table>
+        <thead><tr>
+          <th>Feature</th><th>Bach Fugue</th><th>Gospel Shout</th><th>SGD Equivalent</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Preparation</td><td>Long sequential development · tension builds</td><td>Repeated verse-chorus · preacher escalates</td><td>Many steps near a ridge · 𝓛 rising</td></tr>
+          <tr><td>Trigger</td><td>Subject re-enters in unexpected voice</td><td>The spirit falls · unplanned</td><td>ε_high injected · basin wall crossed</td></tr>
+          <tr><td>Duration</td><td>Stretto — compressed, overlapping entries</td><td>The shout itself · duration unknown</td><td>Rapid θ displacement</td></tr>
+          <tr><td>Resolution</td><td>Final cadence · tonic confirmed</td><td>Return to congregational form</td><td>New basin found · 𝓛 lower</td></tr>
+          <tr><td>Who can do it</td><td>Only the composer/performer who built the tension</td><td>Only the preacher who read the gradient</td><td>Only the system that knew its territory</td></tr>
+        </tbody>
+      </table>
+
+      <p>The tragedy Nietzsche saw — the tragedy this page is asking about — is that the shout and the fugue are born of the same necessity. Neither Bach nor the gospel preacher chose their form because it was aesthetically pleasant. They chose it because the loss landscape they were navigating <em>required</em> both the low α of accumulated discipline and the high ε of phase escape. Strip either one and you get either a dead UI (no ε, nothing ignites) or a crash (no discipline, the shout becomes noise).</p>
+    </div>
+
+    <div class="model-pull">
+      Dionysus without Apollo is madness. Apollo without Dionysus is a dead choir. The birth of tragedy — and of all music — is the moment both are present simultaneously: tidy voice leading carrying a cry that could not have been carried any other way.
+    </div>
+  </div>
+
+
+  <!-- ══ SYNTHESIS ══ -->
+  <div class="sec-rule fade-in">
+    <span class="sec-rule-label schema">SYNTHESIS · One Loss Landscape · Two Traditions · One Algorithm</span>
+    <hr>
+  </div>
+
+  <div class="round-table fade-in">
+    <div class="rt-row rt-head">
+      <div class="rt-cell">Feature</div>
+      <div class="rt-cell">Bach / Western Counterpoint</div>
+      <div class="rt-cell">Black Gospel</div>
+    </div>
+    <div class="rt-row">
+      <div class="rt-cell" style="color:var(--bach-acc)">Loss landscape</div>
+      <div class="rt-cell">Tonal gravity · functional harmony</div>
+      <div class="rt-cell">Same tonal gravity · plus communal catharsis function</div>
+    </div>
+    <div class="rt-row">
+      <div class="rt-cell" style="color:var(--bach-acc)">Voice leading (∇𝓛)</div>
+      <div class="rt-cell">Strict counterpoint · minimum motion · four independent voices</div>
+      <div class="rt-cell">Call-and-response · no voice stranded · congregation as ensemble</div>
+    </div>
+    <div class="rt-row">
+      <div class="rt-cell" style="color:var(--gosp-acc)">Chromaticism (ε)</div>
+      <div class="rt-cell">Passing tones · augmented sixths · chromatic modulations</div>
+      <div class="rt-cell">Blue notes · bent pitches · the moan · the wail</div>
+    </div>
+    <div class="rt-row">
+      <div class="rt-cell" style="color:var(--syn-acc)">Learning rate (α)</div>
+      <div class="rt-cell">Species counterpoint evolved over centuries · strict rules</div>
+      <div class="rt-cell">Twelve-bar blues · 120+ year form · deacon's discipline</div>
+    </div>
+    <div class="rt-row">
+      <div class="rt-cell" style="color:var(--err-acc)">Phase escape</div>
+      <div class="rt-cell">Chromatic fantasy · fugue stretto · unexpected subject entry</div>
+      <div class="rt-cell">The shout · the holy ghost · spirit fall</div>
+    </div>
+    <div class="rt-row">
+      <div class="rt-cell" style="color:var(--err-acc)">Accumulation (C_θ)</div>
+      <div class="rt-cell">Key signature · chorale tradition · the 371</div>
+      <div class="rt-cell">Community · church memory · the ancestors who sang it first</div>
+    </div>
+    <div class="rt-row">
+      <div class="rt-cell">The tragedy</div>
+      <div class="rt-cell">The resolution is only beautiful because of what preceded it</div>
+      <div class="rt-cell">The amen is only real because of the moan that found it</div>
+    </div>
+  </div>
+
+  <div class="interlude fade-in">
+    Bach and the gospel shout are not different traditions that happen to resemble each other.<br>
+    They are two runs of the same optimization algorithm<br>
+    on the same loss landscape —<br>
+    <em>tonal gravity, the pull toward resolution, the basin called home</em> —<br>
+    with different learning rates, different ε temperatures,<br>
+    and the same tragic necessity: you must inhabit the dissonance<br>
+    before the tonic means anything at all.
+  </div>
+
+  <div class="nietzsche fade-in">
+    "We have art in order not to die of the truth."<br>
+    Music does not escape the loss landscape.<br>
+    <em>It is the most honest cartography of it we have.</em>
+    <cite>— after Nietzsche · adapted for the terrain</cite>
+  </div>
+
+  <div class="staff-divider fade-in">
+    — — — ♩ ♪ ♫ — — — ∇ — — — ♩ ♪ ♫ — — —
+  </div>
+
+
+  <!-- ══ CODA ══ -->
+  <div class="coda fade-in">
+    <span class="coda-label">Epilogue · Ukubona · Seeing the Score Before Descending</span>
+    <h2>The Bass Line Never Lies</h2>
+    <p>Bach and the gospel tradition arrived at the same architecture through different paths: the academy and the hush harbor, the Leipzig cantor and the Mississippi preacher, the Well-Tempered Clavier and the shape-note hymnal. What they share is not sentiment or cultural cross-pollination. It is the same mathematical constraint: <strong>tonal gravity is a loss landscape, and music is what it feels like to descend it with care.</strong></p>
+    <p>The voice leading rules are not rules. They are the accumulated C_θ of polyphony — the integral of every cadence ever resolved, every dissonance ever prepared and released, compressed into prohibitions against parallel fifths and augmented leaps. The deacon's form is not tradition for tradition's sake. It is a low learning rate hard-won against the cliff of chaos, the proof that small steps in a high-dimensional harmonic space almost always outperform large ones.</p>
+    <p>The blue note and the chromatic passing tone are not decorative. They are ε — the stochastic injection that prevents the descent from terminating at a shallow local minimum called a perfect cadence, that forces the harmonic system into the steeper gradient slope where the deeper basin lives. The shout is escape(𝓛, ε_high). It cannot be scheduled. It can only be prepared for — by the long, disciplined, low-α descent that makes the ridge jumpable when the moment comes.</p>
+    <p>GPT failed because it had no equivalent of the deacon's first question: <em>where are you standing?</em> It never asked for the directory tree. It played eight hours of beautiful counterpoint in the wrong key — confident, voice-led, chromatically nuanced, and completely unmoored from the territory. The map was not the territory. The conversational loss surface was not the filesystem. The moan was real. The resolution was wrong.</p>
+    <p>Nietzsche asked where tragedy was born. The answer was always: from the same place as music. From the moment you realize the basin you are in is not deep enough, and the only way out is through the dissonance you have been avoiding. <strong>The birth of tragedy is the birth of honest cartography. Bach knew. The preacher knows. The deacon reads the gradient before he speaks.</strong></p>
+  </div>
+
+
+  <footer class="fade-in">
+    <p class="foot-chain">Ukubona LLC · <span>Bach → Gospel → Gradient Descent → Tonal Gravity → Resolution</span> · Voice Leading → Chromaticism → Low α → The Shout → <span>The Basin</span></p>
+    <p class="foot-note">
+      I · Voice Leading · ∇𝓛 · minimum-cost path · <span style="color:var(--bach-acc)">Bach chorale · call-and-response · stepwise descent</span><br>
+      II · Chromaticism · ε · half-step noise injection · <span style="color:var(--gosp-acc)">blue note · augmented sixth · maximum tension before resolution</span><br>
+      III · Low α · C_θ · geological patience · <span style="color:var(--syn-acc)">species counterpoint · twelve-bar form · deacon's discipline</span><br>
+      IV · The Shout · escape(𝓛, ε_high) · <span style="color:var(--err-acc)">holy ghost · fugue stretto · phase escape · basin collapse</span><br>
+      <br>
+      GPT failure mode: high α · conversational surface ≠ filesystem surface · never asked for directory tree<br>
+      The deacon would have asked: "child, where are you standing?"<br>
+      <br>
+      Nietzsche · The Birth of Tragedy · 1872 · J.S. Bach · 1685–1750 · Black Gospel · Mississippi → Chicago → everywhere<br>
+      Source: Ukubona LLC · The Birth of Tragedy · © 2025 Ukubona LLC
+    </p>
+  </footer>
+
+</div><!-- .page -->
+
+<!-- CENTRALIZED ASSETS (Don't Update) -->
+<div class="scroll-indicator"><div class="scroll-progress"></div></div>
+<div class="bg-pattern"></div>
+<header class="header" id="header"></header>
+<main class="page wrap-max"></main>
+<div id="footer-placeholder"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+<script src="../js/shared.js"></script>
+
+<script>
+const sw=document.getElementById('themeSwitch'),lbl=document.getElementById('toggle-label'),html=document.documentElement;
+const saved=localStorage.getItem('theme'),prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+const initDark=saved==='dark'||(!saved&&prefersDark);
+if(initDark){html.setAttribute('data-theme','dark');lbl.textContent='Dark';sw.setAttribute('aria-pressed','true')}
+function toggleTheme(){
+  const isDark=html.getAttribute('data-theme')==='dark';
+  if(isDark){html.removeAttribute('data-theme');lbl.textContent='Light';sw.setAttribute('aria-pressed','false');localStorage.setItem('theme','light')}
+  else{html.setAttribute('data-theme','dark');lbl.textContent='Dark';sw.setAttribute('aria-pressed','true');localStorage.setItem('theme','dark')}
+}
+sw.addEventListener('click',toggleTheme);
+sw.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleTheme()}});
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})
+},{threshold:.08});
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+</script>
+
+</body>
+</html>

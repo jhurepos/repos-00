@@ -1,0 +1,193 @@
+/* ========== CARD-SPECIFIC STYLES ========== */
+
+/* Main card styling - NO TOP MARGIN (let head.css .page handle spacing) */
+.card {
+  max-width: 720px; 
+  margin: 0 auto 64px; /* 0 top, auto sides, 64px bottom */
+  text-align: left;
+  background: rgba(255, 255, 255, 0.05); 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px; 
+  padding: 32px 24px; 
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.55);
+}
+
+/* Card logo */
+.card-logo { 
+  max-width: 140px; 
+  margin-bottom: 14px; 
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.card-logo:hover {
+  transform: scale(1.05);
+}
+
+/* Card headings */
+.card-title, .card h1 { 
+  margin: 0; 
+  font-size: 2rem; 
+  font-weight: 800; 
+  color: var(--text);
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: left;
+  display: block; /* Ensures visibility on mobile Safari */
+}
+
+.card-subtitle { 
+  margin: 6px 0 16px; 
+  font-weight: 600; 
+  opacity: 0.9; 
+  font-size: 1.15rem; 
+  color: var(--text-secondary);
+  text-align: left;
+}
+
+/* Bio sections */
+.bio {
+  opacity: 0.95; 
+  font-size: 0.95rem; 
+  line-height: 1.65; 
+  margin: 0 auto; 
+  max-width: 70ch; 
+  text-align: left;
+  color: var(--text);
+}
+
+.bio-secondary {
+  margin-top: 10px;
+}
+
+.bio strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* Badges */
+.badges {
+  margin: 20px auto 0; 
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: center; 
+  gap: 10px;
+  max-width: 70ch;
+}
+
+.badge {
+  background: rgba(255, 255, 255, 0.08); 
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 14px; 
+  border-radius: 999px; 
+  font-size: 0.9rem; 
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+}
+
+.badge:hover {
+  background: rgba(102, 126, 234, 0.15);
+  border-color: rgba(102, 126, 234, 0.4);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+/* CTA row */
+.cta-row {
+  margin-top: 22px; 
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: center; 
+  gap: 14px;
+}
+
+a.cta {
+  text-decoration: none; 
+  padding: 0.9rem 1.4rem; 
+  border-radius: 12px; 
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  display: inline-flex; 
+  align-items: center; 
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+a.cta:hover { 
+  transform: translateY(-2px); 
+}
+
+.primary { 
+  background: linear-gradient(135deg, #6366f1, #8b5cf6); 
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.primary:hover {
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.secondary { 
+  background: rgba(255, 255, 255, 0.08); 
+  border: 1px solid rgba(255, 255, 255, 0.2); 
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .card {
+    /* CRITICAL FIX: Add 180px top margin to clear the 160px header */
+    /* Page padding-top is 180px on desktop but often collapses on mobile */
+    margin: 180px auto 48px !important;  
+    
+    padding: 20px 20px;  
+    max-width: 90%;
+  }
+  
+  .card h1 {
+    font-size: 1.75rem;
+    margin-bottom: 20px;
+    /* Ensure text renders even if gradient fails */
+    -webkit-text-fill-color: initial;
+    color: var(--text);
+    background: none;
+    -webkit-background-clip: initial;
+  }
+  
+  .card-subtitle {
+    font-size: 1rem;
+  }
+  
+  .bio {
+    font-size: 0.9rem;
+    max-width: none;
+  }
+  
+  .cta-row {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  a.cta {
+    width: 100%;
+    justify-content: center;
+  }
+}

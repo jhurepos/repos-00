@@ -1,0 +1,147 @@
+/* ===== MAIN.CSS (Variables removed - now in variables.css) ===== */
+
+/* ===== BASE STYLES ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: var(--transition);
+}
+
+/* Background Animation */
+.bg-pattern {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+    background: var(--bg);
+}
+.bg-pattern::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 20% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+    animation: backgroundFloat 20s ease-in-out infinite;
+}
+@keyframes backgroundFloat {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(20px, 10px); }
+}
+
+/* ===== HEADER & NAV ===== */
+.header {
+    position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+    backdrop-filter: blur(var(--blur)); background: var(--surface);
+    border-bottom: 1px solid var(--border); min-height: var(--header-h);
+}
+.nav-container {
+    max-width: var(--max-wrap); margin: 0 auto; padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: var(--header-h);
+}
+
+.logo {
+    width: var(--logo-size); height: var(--logo-size);
+    animation: spin var(--logo-spin-duration) linear infinite;
+    transition: transform 0.3s ease;
+    will-change: transform;
+}
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.top-right { display: flex; align-items: center; gap: 1rem; }
+
+/* Menu Icon Dots */
+.menu-icon {
+    display: grid; grid-template-columns: repeat(3, 6px); gap: 3px;
+    padding: 8px; cursor: pointer; border-radius: 8px; background: var(--glass);
+}
+.menu-icon div { width: 6px; height: 6px; background: var(--text); border-radius: 50%; }
+
+/* ===== APP GRID (FIXED VERSION) ===== */
+.app-grid {
+    position: fixed;
+    top: calc(var(--header-h) + 10px);
+    right: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--surface);
+    backdrop-filter: blur(var(--blur));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    z-index: 2000;
+    max-height: 80vh;
+    overflow-y: auto;
+    
+    /* Hidden by default */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-15px);
+    transition: var(--transition);
+}
+
+.app-grid.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.app-grid a {
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    padding: 1rem; text-decoration: none; color: var(--text);
+    background: var(--glass); border: 1px solid var(--border); border-radius: 12px;
+}
+.app-grid a:hover { background: var(--primary-gradient); color: #fff; transform: translateY(-2px); }
+
+/* ===== HERO & CONTENT ===== */
+.hero {
+    min-height: 80vh; display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 2rem;
+}
+.hero-title {
+    font-size: clamp(3rem, 8vw, 6rem); font-weight: 900;
+    background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-cta { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap; }
+
+.cta-button {
+    padding: 1rem 2rem; border-radius: 12px; font-weight: 600; text-decoration: none;
+    transition: var(--transition);
+}
+.cta-primary { background: var(--primary-gradient); color: white; }
+.cta-secondary { background: var(--glass); color: var(--text); border: 1px solid var(--border); }
+
+/* ===== CARDS & METRICS ===== */
+.role-grid, .services-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem; padding: 2rem 0;
+}
+.role-card, .service-card {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 2rem; border-radius: var(--radius); transition: var(--transition);
+}
+.role-card:hover { transform: translateY(-5px); }
+
+.metric-value {
+    font-size: 2.5rem; font-weight: 900; background: var(--success-gradient);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+/* ===== FOOTER ===== */
+.footer { text-align: center; padding: 4rem 2rem; border-top: 1px solid var(--border); margin-top: 4rem; }
+.footer-chorus .chip { background: var(--warning-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 767px) {
+    .app-grid {
+        right: 1rem; left: 1rem;
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .hero-title { font-size: 3rem; }
+}
+
+/* Utils */
+.sep { display: none !important; }

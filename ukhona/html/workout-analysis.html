@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workout Analysis · Performance Comparison · Ukubona LLC</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+
+<link href="../css/variables.css?v=1.1" rel="stylesheet" />
+<link href="../css/head.css?v=1.1" rel="stylesheet" />
+<link href="../css/card.css?v=1.1" rel="stylesheet" />
+<link href="../css/footer.css" rel="stylesheet" />
+
+<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+:root {
+  color-scheme: light dark;
+  --paper:      #f2ede6;
+  --ink:        #1a1008;
+  --ink2:       #332010;
+  --ink3:       #7a6050;
+  --rule:       #c4a882;
+  --rule2:      #e0d0bc;
+  --accent:     #8b1a1a;
+  --accent2:    #c04020;
+  --a-bg:#0a0f0a; --a-text:#b8d8b0; --a-acc:#60a860;
+  --b-bg:#0a0e14; --b-text:#b0c8d8; --b-acc:#5090c0;
+  --c-bg:#140a0a; --c-text:#d8b8b0; --c-acc:#c06050;
+  --mono:'IBM Plex Mono',monospace;
+  --serif:'Source Serif 4',Georgia,serif;
+  --display:'Playfair Display',Georgia,serif;
+  --toggle-bg:#e0cdb0; --toggle-knob:#1a1008;
+}
+[data-theme="dark"] {
+  --paper:#0d0a14; --ink:#e8d890; --ink2:#c8b870; --ink3:#8a7850;
+  --rule:#3a2a10; --rule2:#221808; --accent:#e04030; --accent2:#f08040;
+  --toggle-bg:#1e1408; --toggle-knob:#e8d890;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#0d0a14; --ink:#e8d890; --ink2:#c8b870; --ink3:#8a7850;
+    --rule:#3a2a10; --rule2:#221808; --accent:#e04030; --accent2:#f08040;
+    --toggle-bg:#1e1408; --toggle-knob:#e8d890;
+  }
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.9;transition:background .3s ease,color .3s ease}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.theme-toggle{position:fixed;top:1.2rem;right:1.5rem;z-index:999;display:flex;align-items:center;gap:.55rem;font-family:var(--mono);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink3)}
+.toggle-switch{position:relative;width:2.6rem;height:1.3rem;background:var(--toggle-bg);border:1px solid var(--rule);border-radius:0;cursor:pointer;transition:background .25s}
+.toggle-switch::after{content:'';position:absolute;top:.2rem;left:.2rem;width:.75rem;height:.75rem;background:var(--toggle-knob);transition:transform .25s ease}
+[data-theme="dark"] .toggle-switch::after{transform:translateX(1.25rem)}
+
+.page{max-width:880px;margin:0 auto;padding:0 2.4rem 12rem;position:relative;z-index:1}
+
+/* MASTHEAD */
+.masthead{padding:8rem 0 4rem;border-bottom:4px double var(--ink);margin-bottom:5rem;animation:drop 1.1s cubic-bezier(.16,1,.3,1) both}
+.mast-eyebrow{font-family:var(--mono);font-size:.5rem;letter-spacing:.38em;text-transform:uppercase;color:var(--ink3);margin-bottom:2.5rem}
+.mast-numeral{font-family:var(--display);font-size:clamp(5rem,18vw,14rem);font-weight:900;line-height:.85;color:transparent;-webkit-text-stroke:2px var(--rule);letter-spacing:-.04em;margin-bottom:-1rem;user-select:none;opacity:.5}
+.mast-title{font-family:var(--display);font-size:clamp(2rem,5vw,4rem);font-weight:700;line-height:1.1;letter-spacing:.01em;color:var(--ink);margin-bottom:1rem}
+.mast-title em{font-style:italic;font-weight:400;color:var(--accent)}
+.mast-sub{font-family:var(--mono);font-size:.58rem;color:var(--ink3);letter-spacing:.1em;line-height:2.2;margin-bottom:3rem}
+.mast-sub em{color:var(--accent2);font-style:normal}
+
+/* MASTER ALIGNMENT TABLE */
+.align-strip{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.6rem;margin:2rem 0;border:1px solid var(--rule)}
+.align-strip thead{background:rgba(180,140,80,.1)}
+.align-strip th{padding:.5rem .7rem;font-size:.46rem;letter-spacing:.26em;text-transform:uppercase;color:var(--ink3);border-bottom:2px solid var(--rule);border-right:1px solid var(--rule2);text-align:left}
+.align-strip th:last-child{border-right:none}
+.align-strip td{padding:.45rem .7rem;border-bottom:1px solid var(--rule2);border-right:1px solid var(--rule2);vertical-align:top;line-height:1.5}
+.align-strip td:last-child{border-right:none}
+.align-strip tr:last-child td{border-bottom:none}
+.align-strip tr.wa td{color:#9090c0}
+.align-strip tr.wb td{color:#c07050}
+.align-strip tr.wc td{color:#60a868}
+
+/* CIPHER GRID */
+.cipher-grid{margin-top:3rem;border-top:1px solid var(--rule)}
+.cipher-line{display:grid;grid-template-columns:4rem 1.3fr 2.1fr .85fr;align-items:baseline;padding:.8rem 0;border-bottom:1px solid var(--rule2);gap:1rem;transition:background .15s}
+.cipher-line:hover{background:rgba(180,120,40,.05)}
+.cl-roman{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;color:var(--rule)}
+.cl-noun{font-family:var(--display);font-size:.82rem;letter-spacing:.06em;font-weight:700;color:var(--ink2)}
+.cl-verb{font-family:var(--serif);font-size:.88rem;font-style:italic;color:var(--ink)}
+.cl-key{font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;color:var(--accent);text-align:right;border:1px solid var(--accent);padding:.16rem .38rem;justify-self:end;align-self:center}
+
+.cipher-line.la .cl-roman,.cipher-line.la .cl-noun,.cipher-line.la .cl-verb{color:#9090c0}
+.cipher-line.la .cl-key{border-color:#9090c0;color:#9090c0;background:rgba(144,144,192,.08)}
+.cipher-line.lb .cl-roman,.cipher-line.lb .cl-noun,.cipher-line.lb .cl-verb{color:#c07050}
+.cipher-line.lb .cl-key{border-color:#c07050;color:#c07050;background:rgba(192,112,80,.08)}
+.cipher-line.lc .cl-roman,.cipher-line.lc .cl-noun,.cipher-line.lc .cl-verb{color:#60a868}
+.cipher-line.lc .cl-key{border-color:#60a868;color:#60a868;background:rgba(96,168,104,.08)}
+
+/* SEC RULE */
+.sec-rule{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:1.2rem;margin:5.5rem 0 2.5rem}
+.sec-rule-label{font-family:var(--mono);font-size:.52rem;letter-spacing:.4em;text-transform:uppercase;white-space:nowrap;padding:.28rem .8rem;border:1px solid var(--ink);color:var(--ink)}
+.sec-rule-label.wa{border-color:#9090c0;color:#9090c0;background:rgba(144,144,192,.06)}
+.sec-rule-label.wb{border-color:#c07050;color:#c07050;background:rgba(192,112,80,.06)}
+.sec-rule-label.wc{border-color:#60a868;color:#60a868;background:rgba(96,168,104,.06)}
+.sec-rule-label.schema{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.sec-rule hr{border:none;border-top:1px solid var(--rule);width:100%}
+
+/* MODEL BLOCKS */
+.model-block{border-left:3px solid;padding:2.4rem 2.8rem;margin:0 0 3rem;position:relative}
+.model-stamp{position:absolute;top:1rem;right:1.4rem;font-family:var(--mono);font-size:.44rem;letter-spacing:.38em;text-transform:uppercase;opacity:.6;border:1px solid;padding:.15rem .5rem}
+.model-block h2{font-family:var(--display);font-size:1.4rem;font-weight:700;margin-bottom:.5rem;line-height:1.2}
+.model-block .model-sub{font-family:var(--mono);font-size:.54rem;letter-spacing:.22em;margin-bottom:2rem}
+.model-block h3{font-family:var(--display);font-size:1.05rem;font-weight:700;margin:2.2rem 0 .6rem;padding-top:1.4rem;border-top:1px solid}
+.model-prose{font-size:.9rem;line-height:1.85;margin-bottom:1.2rem}
+.model-prose p{margin-bottom:1rem}
+.model-prose ul,.model-prose ol{padding-left:1.4rem;margin-bottom:1rem}
+.model-prose li{margin-bottom:.35rem;line-height:1.7}
+.model-prose blockquote{border-left:2px solid;margin:1.2rem 0;padding:.6rem 1.2rem;font-style:italic;opacity:.85}
+.model-pull{border-top:1px solid;border-bottom:1px solid;padding:1.2rem 0;margin:1.8rem 0;font-family:var(--display);font-style:italic;font-size:1.05rem;line-height:1.65}
+
+/* DATA TABLE */
+.model-prose table{width:100%;border-collapse:collapse;font-size:.72rem;margin:1.4rem 0;font-family:var(--mono)}
+.model-prose th{font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;padding:.48rem .65rem;border-bottom:2px solid;text-align:left}
+.model-prose td{padding:.44rem .65rem;border-bottom:1px solid;vertical-align:top;line-height:1.5}
+.model-prose tr:last-child td{border-bottom:none}
+
+/* WORKOUT A BLOCK */
+.wa-block{background:#0d0d18;border-color:#9090c0}
+.wa-block .model-stamp{color:#9090c0;border-color:#9090c0}
+.wa-block h2{color:#c8d0f8}.wa-block .model-sub{color:#9090c0}
+.wa-block h3{color:#9090c0;border-color:rgba(144,144,192,.2)}
+.wa-block .model-prose{color:#c8d0f8}
+.wa-block .model-prose strong{color:#e8f0ff}.wa-block .model-prose em{color:#9090c0}
+.wa-block .model-prose blockquote{border-color:#9090c0}
+.wa-block .model-pull{color:#9090c0;border-color:rgba(144,144,192,.3)}
+.wa-block .model-prose th{border-color:#9090c0;color:#9090c0}
+.wa-block .model-prose td{border-color:rgba(144,144,192,.15)}
+
+/* WORKOUT B BLOCK */
+.wb-block{background:#140e08;border-color:#c07050}
+.wb-block .model-stamp{color:#c07050;border-color:#c07050}
+.wb-block h2{color:#e8d0b8}.wb-block .model-sub{color:#c07050}
+.wb-block h3{color:#c07050;border-color:rgba(192,112,80,.2)}
+.wb-block .model-prose{color:#e8d0b8}
+.wb-block .model-prose strong{color:#fff0d0}.wb-block .model-prose em{color:#c07050}
+.wb-block .model-prose blockquote{border-color:#c07050}
+.wb-block .model-pull{color:#c07050;border-color:rgba(192,112,80,.3)}
+.wb-block .model-prose th{border-color:#c07050;color:#c07050}
+.wb-block .model-prose td{border-color:rgba(192,112,80,.15)}
+
+/* WORKOUT C BLOCK */
+.wc-block{background:#0a140a;border-color:#60a868}
+.wc-block .model-stamp{color:#60a868;border-color:#60a868}
+.wc-block h2{color:#c0e0b8}.wc-block .model-sub{color:#60a868}
+.wc-block h3{color:#60a868;border-color:rgba(96,168,104,.2)}
+.wc-block .model-prose{color:#c0e0b8}
+.wc-block .model-prose strong{color:#d8f0d0}.wc-block .model-prose em{color:#60a868}
+.wc-block .model-prose blockquote{border-color:#60a868}
+.wc-block .model-pull{color:#60a868;border-color:rgba(96,168,104,.3)}
+.wc-block .model-prose th{border-color:#60a868;color:#60a868}
+.wc-block .model-prose td{border-color:rgba(96,168,104,.15)}
+
+/* ANNOTATION */
+.annotation{margin:1.5rem 0;border-left:3px solid var(--rule);padding:.9rem 1.4rem;background:rgba(196,168,130,.06);font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;color:var(--ink3);line-height:1.9}
+.annotation::before{content:'🏃  PERFORMANCE · CALORIE BURN · THREE SESSIONS · ONE BODY';display:block;font-size:.44rem;letter-spacing:.4em;opacity:.7;margin-bottom:.4rem}
+
+/* INTERLUDE */
+.interlude{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:2rem 0;margin:3.5rem 0;font-family:var(--display);font-style:italic;font-size:1.1rem;line-height:1.7;color:var(--ink2);text-align:center}
+
+/* ROUND TABLE */
+.round-table{margin:2.5rem 0;border:1px solid var(--rule)}
+.rt-row{display:grid;grid-template-columns:10rem 8rem 1fr 1fr 1fr;gap:0;border-bottom:1px solid var(--rule2)}
+.rt-row:last-child{border-bottom:none}
+.rt-row.rt-head{background:rgba(180,140,80,.08)}
+.rt-cell{padding:.55rem .9rem;font-family:var(--mono);font-size:.55rem;letter-spacing:.08em;line-height:1.6;border-right:1px solid var(--rule2)}
+.rt-cell:last-child{border-right:none}
+.rt-head .rt-cell{font-size:.46rem;letter-spacing:.26em;text-transform:uppercase;color:var(--ink3)}
+.rt-wa{color:#9090c0}
+.rt-wb{color:#c07050}
+.rt-wc{color:#60a868}
+
+/* ═══════════════════════════════════════════
+   3×3 WORKOUT IMAGE GRID — cells fill fully
+   ═══════════════════════════════════════════ */
+.grid-section{margin:3rem -2.4rem}
+.grid-section-label{font-family:var(--mono);font-size:.5rem;letter-spacing:.38em;text-transform:uppercase;color:var(--ink3);margin-bottom:1.5rem;padding:0 2.4rem}
+
+.workout-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(3,390px);
+  gap:6px;
+  border:1px solid var(--rule);
+}
+
+.grid-cell{
+  position:relative;
+  overflow:hidden;
+  background:#111;
+}
+
+/* Row labels on left edge of col-1 cells */
+.grid-cell[data-row="A"],.grid-cell[data-row="B"],.grid-cell[data-row="C"]{/* handled by badge */}
+
+/* Full-bleed image */
+.grid-cell img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:top center;
+  transition:transform .45s ease;
+}
+.grid-cell:hover img{transform:scale(1.04)}
+
+/* Badge overlay */
+.cell-badge{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  padding:.28rem .55rem;
+  font-family:var(--mono);
+  font-size:.44rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(0,0,0,.62);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  pointer-events:none;
+}
+.badge-id{font-weight:600}
+.badge-desc{opacity:.7;font-size:.38rem;letter-spacing:.18em}
+
+/* Row-specific badge colors */
+.row-a .cell-badge{color:#9090c0;border-top:1px solid rgba(144,144,192,.3)}
+.row-b .cell-badge{color:#c07050;border-top:1px solid rgba(192,112,80,.3)}
+.row-c .cell-badge{color:#60a868;border-top:1px solid rgba(96,168,104,.3)}
+
+/* Row separator lines */
+.grid-row-label{
+  display:none; /* baked into badge */
+}
+
+/* CODA */
+.coda{border:2px solid var(--ink);padding:3.2rem 3.8rem;margin:6rem 0;position:relative}
+.coda-label{position:absolute;top:-.75rem;left:2rem;font-family:var(--mono);font-size:.48rem;letter-spacing:.45em;text-transform:uppercase;background:var(--paper);padding:0 .75rem;color:var(--ink)}
+.coda h2{font-family:var(--display);font-size:1.3rem;font-weight:700;font-style:italic;letter-spacing:.02em;color:var(--ink);margin-bottom:1.4rem}
+.coda p{color:var(--ink2);margin-bottom:1.1rem;line-height:1.85}
+.coda p:last-child{margin-bottom:0}
+.coda strong{color:var(--ink)}
+
+footer{border-top:3px double var(--ink);padding:3rem 0 7rem}
+.foot-chain{font-family:var(--mono);font-size:.54rem;letter-spacing:.28em;color:var(--ink3);margin-bottom:.8rem}
+.foot-chain span{color:var(--accent2)}
+.foot-note{font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;color:var(--ink3);line-height:2.5}
+
+.fade-in{opacity:0;transform:translateY(14px);transition:opacity .65s ease,transform .65s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+@keyframes drop{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+
+@media (max-width:640px){
+  .mast-numeral{font-size:6rem}.mast-title{font-size:1.9rem}
+  .cipher-line{grid-template-columns:3rem 1fr;gap:.2rem}
+  .cl-verb,.cl-key{grid-column:2}
+  .coda{padding:2rem 1.6rem}.model-block{padding:1.8rem 1.6rem}
+  .theme-toggle{top:.7rem;right:.9rem}
+  .rt-row{grid-template-columns:1fr 1fr 1fr}
+  .align-strip{font-size:.52rem}
+  .workout-grid{grid-template-rows:repeat(3,220px)}
+}
+</style>
+</head>
+<body>
+
+<div class="theme-toggle" aria-label="Toggle dark/light mode">
+  <span id="toggle-label">Light</span>
+  <div class="toggle-switch" id="themeSwitch" role="button" tabindex="0" aria-pressed="false"></div>
+</div>
+
+<div class="page">
+
+  <!-- ══ MASTHEAD ══ -->
+  <header class="masthead">
+    <br><br><br>
+    <div class="mast-eyebrow">Ukubona LLC · Workout Analysis · The Performance Triad · Recovery → Endurance → Power · Three Sessions · One Body</div>
+    <div class="mast-numeral" aria-hidden="true">🏃🏿‍♂️</div>
+    <h1 class="mast-title">
+      Workout Performance:<br>
+      <em>Calorie Burn &amp; Comparative Analysis</em>
+    </h1>
+    <p class="mast-sub">
+      // A.  Nov 30 · Kampala · Easy effort · Flat terrain · 447 ft gain · <em>Recovery / baseline session</em><br>
+      // B.  Nov 15 · Bufumbira · Endurance hike · 3,503 ft gain · Peak ~11,390 ft · <em>Mgahinga mountain traverse</em><br>
+      // C.  Mar 1  · Kampala · Hard effort · 1,796 ft gain · Higher power · <em>Training intensity progression</em><br>
+      // ·   Subject: 45-year-old male · 215 lbs (~97.5 kg) · BMR est. 1,992 cal/day · <em>Active calories analyzed</em><br>
+      // ·   Pattern: 3 → 5 → 7 effort scale · progressive periodization · <em>solid foundation, room for efficiency gains</em>
+    </p>
+
+    <!-- Overview alignment table -->
+    <table class="align-strip">
+      <thead>
+        <tr><th>#</th><th>Workout</th><th>Location / Date</th><th>Distance</th><th>Elevation Gain</th><th>Active Cal</th><th>Effort</th></tr>
+      </thead>
+      <tbody>
+        <tr class="wa"><td>A</td><td>Easy Run/Walk</td><td>Kampala · Nov 30</td><td>9.00 mi</td><td>447 ft</td><td>964 cal</td><td>3 / Easy</td></tr>
+        <tr class="wb"><td>B</td><td>Mountain Hike</td><td>Bufumbira · Nov 15</td><td>9.50 mi</td><td>3,503 ft</td><td>2,071 cal</td><td>5 / Moderate</td></tr>
+        <tr class="wc"><td>C</td><td>Hard Training Run</td><td>Kampala · Mar 1</td><td>10.41 mi</td><td>1,796 ft</td><td>1,649 cal</td><td>7 / Hard</td></tr>
+      </tbody>
+    </table>
+
+    <div class="cipher-grid">
+      <div class="cipher-line la">
+        <span class="cl-roman">A</span>
+        <span class="cl-noun">Recovery / Baseline</span>
+        <span class="cl-verb">23'10"/mi · 87 BPM avg · 93 SPM · 105W · likely walking segments · fat-burning zone</span>
+        <span class="cl-key">RECOVERY</span>
+      </div>
+      <div class="cipher-line lb">
+        <span class="cl-roman">B</span>
+        <span class="cl-noun">Endurance Hike</span>
+        <span class="cl-verb">9.6 hrs · 39 SPM (hiking gait) · 129 BPM · 3,503 ft gain · rugged off-trail terrain · altitude</span>
+        <span class="cl-key">ENDURANCE</span>
+      </div>
+      <div class="cipher-line lc">
+        <span class="cl-roman">C</span>
+        <span class="cl-noun">Power Training</span>
+        <span class="cl-verb">19'28"/mi · 126 BPM · 103 SPM · 149W · 488 active cal/hr · strongest output across all sessions</span>
+        <span class="cl-key">POWER</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="annotation fade-in">
+    The subject's three workouts span the full training spectrum: a leisurely recovery walk, a 9.6-hour mountain traverse peaking near 11,390 ft in Mgahinga Gorilla National Park, and a hard Kampala training run. Burn rates: A = 278 cal/hr, B = 215 cal/hr (sustained over massive duration), C = 488 cal/hr (peak efficiency). Effort progression (3→5→7) reflects smart periodization. The largest variable is not pace but elevation — Bufumbira's 3,503 ft gain functions as the primary caloric multiplier in Workout B.
+  </div>
+
+
+  <!-- ══ WORKOUT A ══ -->
+  <div class="sec-rule fade-in">
+    <span class="sec-rule-label wa">A · Kampala · Nov 30 · Easy / Recovery</span>
+    <hr>
+  </div>
+
+  <div class="model-block wa-block fade-in">
+    <div class="model-stamp">A · Easy · Effort 3</div>
+    <h2>Recovery Baseline — The Low-Intensity Anchor</h2>
+    <p class="model-sub">9.00 mi · 3:28:29 · 447 ft Gain · 964 Active Cal · 87 BPM · 105W · 93 SPM</p>
+
+    <div class="model-prose">
+      <p>Workout A functions as the recovery anchor of this training block. A pace of 23'10"/mi and average heart rate of 87 BPM — approximately 50% of estimated maximum for a 45-year-old (220−45=175 BPM max) — places this firmly in the fat-burning zone. The low cadence (93 SPM vs. the optimal 160–180 SPM for running) strongly suggests walking segments are woven throughout.</p>
+
+      <p>The 447 ft elevation gain confirms flat Kampala terrain with negligible climbing demand. At 278 active cal/hr, this is the least efficient session per unit time but serves its purpose: active recovery, maintaining aerobic base without taxing the musculoskeletal system. For a 215 lb subject at this heart rate, the device estimate of 964 active calories aligns closely with MET-based projections (~4 MET × 97.5 kg × 3.47 hrs = ~900–1,000 cal).</p>
+    </div>
+
+    <h3>Calorie Burn Breakdown</h3>
+    <div class="model-prose">
+      <table>
+        <thead><tr><th>Metric</th><th>Value</th><th>Context</th></tr></thead>
+        <tbody>
+          <tr><td>Active Calories</td><td>964 cal</td><td>Device estimate; MET ~4 confirms accuracy</td></tr>
+          <tr><td>Total Calories</td><td>1,413 cal</td><td>Includes ~288 cal resting contribution (83 cal/hr × 3.47 hr)</td></tr>
+          <tr><td>Active Cal / Hr</td><td>~278 cal/hr</td><td>Lowest of the three — consistent with low intensity</td></tr>
+          <tr><td>Active Cal / Mile</td><td>~107 cal/mi</td><td>Efficient stride economy despite slow pace</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="model-pull">
+      Verdict: Essential for periodization. Keeps weekly volume up without accumulating fatigue. The unusually low HR (87 BPM) may also indicate strong cardiovascular adaptation — or slight sensor under-read on wrist placement.
+    </div>
+  </div>
+
+
+  <!-- ══ WORKOUT B ══ -->
+  <div class="sec-rule fade-in">
+    <span class="sec-rule-label wb">B · Bufumbira · Nov 15 · Endurance Hike</span>
+    <hr>
+  </div>
+
+  <div class="model-block wb-block fade-in">
+    <div class="model-stamp">B · Mountain · Effort 5</div>
+    <h2>The Mountain Traverse — Endurance as the Primary Variable</h2>
+    <p class="model-sub">9.50 mi · 9:37:22 · 3,503 ft Gain · Peak ~11,390 ft · 2,071 Active Cal · 129 BPM · 112W · 39 SPM</p>
+
+    <div class="model-prose">
+      <p>Workout B is categorically different. The 9.6-hour duration, 3,503 ft elevation gain, and a cadence of 39 SPM (unmistakably a hiking gait — approximately half the running cadence) indicate a demanding mountain traverse, likely in Mgahinga Gorilla National Park. The highly variable splits (33 min/mi early, slowing dramatically on ascent to 2+ hrs/mi equivalent) are characteristic of rugged, off-trail mountain terrain.</p>
+
+      <p>At altitude (~11,390 ft peak), the cardiovascular system works harder per unit of mechanical work — accounting for the elevated average heart rate (129 BPM, ~74% of max) despite the slow pace. Device algorithms frequently underestimate hiking calorie burn by 10–20% due to non-steady-state movement; actual active expenditure likely reached 2,300–2,500 cal.</p>
+    </div>
+
+    <h3>Elevation as Caloric Multiplier</h3>
+    <div class="model-prose">
+      <p>The elevation premium is significant. Each 1,000 ft of vertical gain burns approximately 0.5 cal/lb in a 215 lb subject — adding roughly 215 cal × 3.5 segments = ~750 additional calories beyond flat-ground expectation. This is why Workout B generates the highest <em>total</em> calorie burn (2,071 active, 3,315 total) despite its lower hourly rate (215 cal/hr) compared to Workout C.</p>
+    </div>
+
+    <h3>Risk Factors for a 45-Year-Old</h3>
+    <div class="model-prose">
+      <p>The 9+ hour duration at moderate-to-high heart rate, combined with altitude, introduces meaningful physiological risk: altitude sickness, dehydration, joint overload, and prolonged cortisol elevation. Post-B recovery should include at minimum 48 hours of reduced activity. This type of session — though extraordinary for endurance adaptation — should not be repeated more than once every 2–3 weeks.</p>
+    </div>
+
+    <div class="model-pull">
+      Verdict: The most metabolically significant session in terms of total output. Builds hiking-specific strength, VO₂ adaptation, and mental resilience. But the law of diminishing returns applies — the last 2 hours of a 9-hour hike cost more than they return in fitness stimulus.
+    </div>
+  </div>
+
+
+  <!-- ══ WORKOUT C ══ -->
+  <div class="sec-rule fade-in">
+    <span class="sec-rule-label wc">C · Kampala · Mar 1 · Hard Training Run</span>
+    <hr>
+  </div>
+
+  <div class="model-block wc-block fade-in">
+    <div class="model-stamp">C · Power · Effort 7</div>
+    <h2>The Hard Session — Highest Efficiency, Clear Progression</h2>
+    <p class="model-sub">10.41 mi · 3:22:52 · 1,796 ft Gain · 1,649 Active Cal · 126 BPM · 149W · 103 SPM</p>
+
+    <div class="model-prose">
+      <p>Workout C is the standout performance session. At 149W average power — 42% above Workout A's 105W and 33% above Workout B's 112W — it demonstrates the greatest mechanical output. The pace of 19'28"/mi is 20% faster than Workout A's 23'10"/mi, and the cadence of 103 SPM (while still below optimal) represents the most run-like gait of the three sessions. Heart rate at 126 BPM (~72% max) places this in the sustained aerobic-to-threshold range.</p>
+
+      <p>The calorie burn rate of 488 active cal/hr is the most efficient across all three workouts — meaningful because it delivers the most fitness stimulus per unit time. The 1,796 ft elevation gain adds a significant strength-endurance component without the extreme demands of Workout B.</p>
+    </div>
+
+    <h3>Signs of Fitness Progression</h3>
+    <div class="model-prose">
+      <p>Comparing A (Nov 30) to C (Mar 1) over three months: pace improved 20%, power increased 42%, cadence improved 11%. This trajectory — combined with a harder effort level — suggests genuine cardiovascular and neuromuscular adaptation. If this trend continues, sub-15 min/mi pace targets are achievable within 3–6 months of consistent C-type sessions.</p>
+    </div>
+
+    <div class="model-pull">
+      Verdict: The template for future training. More C-type sessions, at gradually increasing frequency, represent the highest-leverage investment in fitness for this subject. Pair with one weekly B-equivalent (shorter, 4–6 hrs) and one A-type recovery day.
+    </div>
+  </div>
+
+
+  <!-- ══ COMPARATIVE TABLE ══ -->
+  <div class="sec-rule fade-in">
+    <span class="sec-rule-label schema">COMPARISON · Three Sessions · Normalized Metrics · Key Findings</span>
+    <hr>
+  </div>
+
+  <div class="round-table fade-in">
+    <div class="rt-row rt-head">
+      <div class="rt-cell">Metric</div>
+      <div class="rt-cell rt-wa">A · Easy</div>
+      <div class="rt-cell rt-wb">B · Hike</div>
+      <div class="rt-cell rt-wc">C · Hard</div>
+      <div class="rt-cell">Verdict</div>
+    </div>
+    <div class="rt-row">
+      <div class="rt-cell">Duration</div>
+      <div class="rt-cell rt-wa">3:28:29</div>
+      <div class="rt-cell rt-wb">9:37:22</div>
+      <div class="rt-cell rt-wc">3:22:52</div>
+      <div class="rt-cell" style="color:var(--ink3)">B = 3× longer; A/C comparable</div>
+    </div>
+    <div class="rt-row">
+      <div class="rt-cell">Active Cal / Hr</div>
+      <div class="rt-cell rt-wa">~278</div>
+      <div class="rt-cell rt-wb">~215</div>
+      <div class="rt-cell rt-wc">~488</div>
+      <div class="rt-cell" style="color:var(--ink3)">C is most efficient by far</div>
+    </div>
+    <div class="rt-row">
+      <div class="rt-cell">Avg Power</div>
+      <div class="rt-cell rt-wa">105W</div>
+      <div class="rt-cell rt-wb">112W</div>
+      <div class="rt-cell rt-wc">149W</div>
+      <div class="rt-cell" style="color:var(--ink3)">C = +42% over A · clear progression</div>
+    </div>
+    <div class="rt-row">
+      <div class="rt-cell">Avg Heart Rate</div>
+      <div class="rt-cell rt-wa">87 BPM</div>
+      <div class="rt-cell rt-wb">129 BPM</div>
+      <div class="rt-cell rt-wc">126 BPM</div>
+      <div class="rt-cell" style="color:var(--ink3)">A = recovery; B/C = cardio zone</div>
+    </div>
+    <div class="rt-row">
+      <div class="rt-cell">Elevation Gain</div>
+      <div class="rt-cell rt-wa">447 ft</div>
+      <div class="rt-cell rt-wb">3,503 ft</div>
+      <div class="rt-cell rt-wc">1,796 ft</div>
+      <div class="rt-cell" style="color:var(--ink3)">B = 8× A; primary caloric driver in B</div>
+    </div>
+    <div class="rt-row">
+      <div class="rt-cell">Cadence</div>
+      <div class="rt-cell rt-wa">93 SPM</div>
+      <div class="rt-cell rt-wb">39 SPM</div>
+      <div class="rt-cell rt-wc">103 SPM</div>
+      <div class="rt-cell" style="color:var(--ink3)">B = hiking gait; C approaches run form</div>
+    </div>
+    <div class="rt-row">
+      <div class="rt-cell">Total Calories</div>
+      <div class="rt-cell rt-wa">1,413</div>
+      <div class="rt-cell rt-wb">3,315</div>
+      <div class="rt-cell rt-wc">2,086</div>
+      <div class="rt-cell" style="color:var(--ink3)">B highest due to duration + altitude</div>
+    </div>
+  </div>
+
+  <div class="interlude fade-in">
+    The spread is clear: A → Recovery baseline <em>(aerobic maintenance, fat-burn zone)</em> · B → Endurance limit-test <em>(altitude, duration, irreplaceable terrain stimulus)</em> · C → Training template <em>(highest efficiency, clearest fitness signal)</em>.<br>
+    Three sessions. One body. The prescription: more C, periodic B, sufficient A.<br>
+    <em>And always: the mountain earns its calories differently than the road.</em>
+  </div>
+
+
+  <!-- ══ 3×3 IMAGE GRID ══ -->
+  <div class="sec-rule fade-in">
+    <span class="sec-rule-label schema">VISUAL RECORD · 3 × 3 · Details · Splits · Stacked Charts</span>
+    <hr>
+  </div>
+
+  <div class="grid-section fade-in">
+    <div class="grid-section-label">Row A = Workout A (Easy · Kampala) &nbsp;·&nbsp; Row B = Workout B (Hike · Bufumbira) &nbsp;·&nbsp; Row C = Workout C (Hard · Kampala) &nbsp;·&nbsp; Col 1 = Details &nbsp;·&nbsp; Col 2 = Splits / Heart Rate &nbsp;·&nbsp; Col 3 = Stack / Elevation</div>
+
+    <div class="workout-grid">
+
+      <!-- ROW A -->
+      <div class="grid-cell row-a">
+        <img src="../img/details-1.PNG" alt="Workout A — Details" loading="lazy">
+        <div class="cell-badge">
+          <span class="badge-id">A1</span>
+          <span class="badge-desc">Details · Nov 30 · Kampala</span>
+        </div>
+      </div>
+      <div class="grid-cell row-a">
+        <img src="../img/splits-1.PNG" alt="Workout A — Splits" loading="lazy">
+        <div class="cell-badge">
+          <span class="badge-id">A2</span>
+          <span class="badge-desc">Splits · HR · Easy</span>
+        </div>
+      </div>
+      <div class="grid-cell row-a">
+        <img src="../img/stack-1.PNG" alt="Workout A — Stack" loading="lazy">
+        <div class="cell-badge">
+          <span class="badge-id">A3</span>
+          <span class="badge-desc">Elevation · Stack · Kampala</span>
+        </div>
+      </div>
+
+      <!-- ROW B -->
+      <div class="grid-cell row-b">
+        <img src="../img/details-2.PNG" alt="Workout B — Details" loading="lazy">
+        <div class="cell-badge">
+          <span class="badge-id">B1</span>
+          <span class="badge-desc">Details · Nov 15 · Bufumbira</span>
+        </div>
+      </div>
+      <div class="grid-cell row-b">
+        <img src="../img/splits-2.PNG" alt="Workout B — Splits" loading="lazy">
+        <div class="cell-badge">
+          <span class="badge-id">B2</span>
+          <span class="badge-desc">Splits · HR · Mountain</span>
+        </div>
+      </div>
+      <div class="grid-cell row-b">
+        <img src="../img/stack-2.PNG" alt="Workout B — Stack" loading="lazy">
+        <div class="cell-badge">
+          <span class="badge-id">B3</span>
+          <span class="badge-desc">Elevation · Stack · 3,503 ft</span>
+        </div>
+      </div>
+
+      <!-- ROW C -->
+      <div class="grid-cell row-c">
+        <img src="../img/details-3.PNG" alt="Workout C — Details" loading="lazy">
+        <div class="cell-badge">
+          <span class="badge-id">C1</span>
+          <span class="badge-desc">Details · Mar 1 · Kampala</span>
+        </div>
+      </div>
+      <div class="grid-cell row-c">
+        <img src="../img/splits-3.PNG" alt="Workout C — Splits" loading="lazy">
+        <div class="cell-badge">
+          <span class="badge-id">C2</span>
+          <span class="badge-desc">Splits · HR · Hard Run</span>
+        </div>
+      </div>
+      <div class="grid-cell row-c">
+        <img src="../img/stack-3.PNG" alt="Workout C — Stack" loading="lazy">
+        <div class="cell-badge">
+          <span class="badge-id">C3</span>
+          <span class="badge-desc">Elevation · Stack · Kampala</span>
+        </div>
+      </div>
+
+    </div><!-- .workout-grid -->
+  </div>
+
+
+  <!-- ══ CODA ══ -->
+  <div class="coda fade-in">
+    <span class="coda-label">Epilogue · Ukubona · Seeing Fully Before Acting Again</span>
+    <h2>The Body Was Always the Laboratory</h2>
+    <p>Three workouts. One body at 45 years and 215 lbs, in Kampala and on the slopes of Bufumbira. The data resolves into a clear picture: solid aerobic foundation, meaningful endurance capacity, and an emerging power output that — if sustained — points toward genuine fitness progression over the November-to-March window.</p>
+    <p>The calorie math is instructive but secondary. What the data actually shows is three different negotiations between intention and terrain. Workout A is maintenance without ego. Workout B is commitment to a landscape that does not yield to pace targets. Workout C is the clearest signal — faster, harder, more efficient — which is what months of the other two make possible.</p>
+    <p>The prescription that follows from the numbers is not complicated: <strong>increase the frequency of C-type sessions, limit ultra-long B-type events to monthly, and keep A as the recovery substrate that makes the other two sustainable.</strong> Add progressive cadence work toward 160 SPM. Introduce one strength session weekly. Target sub-15 min/mi pace within six months.</p>
+    <p>The mountain earns its calories differently. The road gives you the data to understand what the mountain built. Both are necessary. Neither is sufficient. <strong>Same body. Different terrain. That's not just training. That's the architecture.</strong></p>
+  </div>
+
+
+  <footer class="fade-in">
+    <p class="foot-chain">Ukubona LLC · <span>Recovery → Endurance → Power → Efficiency → Progression</span> · Kampala → Bufumbira → <span>Adaptation</span></p>
+    <p class="foot-note">
+      A · Nov 30 · Kampala · Easy/Walk · 9.00 mi · 447 ft · <span style="color:#9090c0">964 active cal — fat-burn zone · recovery baseline · ~278 cal/hr</span><br>
+      B · Nov 15 · Bufumbira · Mountain Hike · 9.50 mi · 3,503 ft · <span style="color:#c07050">2,071 active cal — altitude endurance · ~215 cal/hr · 9.6 hrs</span><br>
+      C · Mar 1 · Kampala · Hard Run · 10.41 mi · 1,796 ft · <span style="color:#60a868">1,649 active cal — peak efficiency · ~488 cal/hr · 149W avg power</span><br>
+      <br>
+      Subject: 45-year-old male · 215 lbs · BMR ~1,992 cal/day · est. VO₂max ~30–35 ml/kg/min · target 40+<br>
+      Effort scale: A = 3 (Easy) · B = 5 (Moderate) · C = 7 (Hard) · Progression confirmed across all key metrics<br>
+      <br>
+      Source: Garmin / Apple Watch · Workout Data · Performance Analysis · © 2026 Ukubona LLC
+    </p>
+  </footer>
+
+</div><!-- .page -->
+
+<!-- CENTRALIZED ASSETS (Don't Update) -->
+<div class="scroll-indicator"><div class="scroll-progress"></div></div>
+<div class="bg-pattern"></div>
+<header class="header" id="header"></header>
+<main class="page wrap-max"></main>
+<div id="footer-placeholder"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+<script src="../js/shared.js"></script>
+
+<script>
+const sw=document.getElementById('themeSwitch'),lbl=document.getElementById('toggle-label'),html=document.documentElement;
+const saved=localStorage.getItem('theme'),prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+const initDark=saved==='dark'||(!saved&&prefersDark);
+if(initDark){html.setAttribute('data-theme','dark');lbl.textContent='Dark';sw.setAttribute('aria-pressed','true')}
+function toggleTheme(){
+  const isDark=html.getAttribute('data-theme')==='dark';
+  if(isDark){html.removeAttribute('data-theme');lbl.textContent='Light';sw.setAttribute('aria-pressed','false');localStorage.setItem('theme','light')}
+  else{html.setAttribute('data-theme','dark');lbl.textContent='Dark';sw.setAttribute('aria-pressed','true');localStorage.setItem('theme','dark')}
+}
+sw.addEventListener('click',toggleTheme);
+sw.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleTheme()}});
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})
+},{threshold:.08});
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+</script>
+
+</body>
+</html>

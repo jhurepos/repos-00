@@ -1,0 +1,78 @@
+/* ========================================
+   FOOTER.CSS - Centered Footer Styles
+   ======================================== */
+
+.footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    border-top: 1px solid var(--border);
+    margin-top: 4rem;
+    background: var(--surface);
+}
+
+.footer-wrap {
+    max-width: var(--max-wrap);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Rotating chorus */
+.footer-chorus {
+    font-size: 1.1rem;
+    font-weight: 600;
+    min-height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-chorus .chip {
+    background: var(--warning-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+}
+
+/* Micro text */
+.footer-micro {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    opacity: 0.8;
+}
+
+.footer-micro p {
+    margin: 0;
+}
+
+.footer-micro a {
+    color: var(--accent-blue);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.3);
+    transition: var(--transition);
+}
+
+.footer-micro a:hover {
+    color: var(--accent-purple);
+    border-bottom-color: var(--accent-purple);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer {
+        padding: 3rem 1.5rem;
+    }
+    
+    .footer-chorus {
+        font-size: 1rem;
+    }
+    
+    .footer-micro {
+        font-size: 0.85rem;
+    }
+}
